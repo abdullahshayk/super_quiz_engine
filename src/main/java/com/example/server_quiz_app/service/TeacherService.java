@@ -38,4 +38,24 @@ public class TeacherService {
 	
 	}
 
+	public ResponseEntity<Response> postTeacher(Teacher teacher) {
+		Response res=new Response();
+		HttpStatus httpStatus=null;
+		try{
+			teacherDao.save(teacher);
+			res.setIsSuccessful(true);
+			res.setMessage("Successful!");
+			res.setData(true);
+			httpStatus=HttpStatus.OK;
+		}catch (Exception e){
+			e.printStackTrace();
+			res.setIsSuccessful(false);
+			res.setMessage("Server Error!");
+			res.setData(false);
+			httpStatus=HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return ResponseEntity.status(httpStatus).body(res);
+
+	}
+
 }

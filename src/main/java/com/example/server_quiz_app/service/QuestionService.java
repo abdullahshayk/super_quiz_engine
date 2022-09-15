@@ -38,4 +38,23 @@ public class QuestionService {
 	
 	}
 
+	public ResponseEntity<Response> postQuestion(Question question) {
+		Response res=new Response();
+		HttpStatus httpStatus=null;
+		try{
+			questionDao.save(question);
+			res.setIsSuccessful(true);
+			res.setMessage("Successful!");
+			res.setData(true);
+			httpStatus=HttpStatus.OK;
+		}catch (Exception e){
+			e.printStackTrace();
+			res.setIsSuccessful(false);
+			res.setMessage("Server Error!");
+			res.setData(false);
+			httpStatus=HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return ResponseEntity.status(httpStatus).body(res);
+
+	}
 }

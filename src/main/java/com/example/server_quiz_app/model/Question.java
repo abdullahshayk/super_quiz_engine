@@ -36,16 +36,18 @@ public class Question {
     @Column(name = "questionType", nullable = false)
     private Byte questionType;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    /////
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "teacher_id", nullable = false)
-    @JsonManagedReference
     private Teacher teacher;
+
+
+
 
     @ManyToMany
     @JoinTable(name = "question_category",
             joinColumns = @JoinColumn(name = "question_question_id"),
             inverseJoinColumns = @JoinColumn(name = "category_category_id"))
-    @JsonManagedReference
     private List<Category> categories = new ArrayList<>();
 
     @OneToMany(mappedBy = "question")

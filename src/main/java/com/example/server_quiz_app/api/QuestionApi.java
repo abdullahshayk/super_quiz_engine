@@ -21,4 +21,8 @@ public class QuestionApi {
         return questionService.getQuestions();
     }
 
+//    @PostMapping("saveQuestion")
+//    public ResponseEntity<Response> saveQuestion(@RequestBody Question question){
+//        return questionService.postQuestion(question);
+//    }
 }

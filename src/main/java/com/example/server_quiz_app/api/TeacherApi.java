@@ -22,4 +22,8 @@ public class TeacherApi {
         return teacherService.getTeachers();
     }
 
+    @PostMapping("saveTeacher")
+    public ResponseEntity<Response> saveTeacher(@RequestBody Teacher teacher){
+        return teacherService.postTeacher(teacher);
+    }
 }
