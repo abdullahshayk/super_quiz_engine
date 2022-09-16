@@ -36,7 +36,6 @@ public class Question {
     @Column(name = "questionType", nullable = false)
     private Integer questionType;
 
-    /////
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "teacher_id", nullable = false)
     private Teacher teacher;
@@ -47,8 +46,8 @@ public class Question {
             inverseJoinColumns = @JoinColumn(name = "category_category_id"))
     private List<Category> categories = new ArrayList<>();
 
-    @OneToMany(mappedBy = "question")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "question_id", nullable = false)
     private List<Option> options = new ArrayList<>();
-
 
 }

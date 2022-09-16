@@ -45,13 +45,13 @@ public class QuestionService {
 	public ResponseEntity<Response> postQuestion(Question question) {
 		try{
 			questionDao.save(question);
-			question.getOptions().forEach(option -> {
-				Option opt=new Option();
-				opt.setOption(option.getOption());
-				opt.setQuestion(question);
-				opt.setIsCorrect((byte) 0);
-				optionDao.save(opt);
-			});
+//			question.getOptions().forEach(option -> {
+//				Option opt=new Option();
+//				opt.setOption(option.getOption());
+//				opt.setQuestion(question);
+//				opt.setIsCorrect((byte) 0);
+//				optionDao.save(opt);
+//			});
 			response.setIsSuccessful(true);
 			response.setMessage("Successful!");
 			response.setData(true);

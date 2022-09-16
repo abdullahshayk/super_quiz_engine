@@ -33,8 +33,7 @@ public class Category {
     @JoinTable(name = "question_category",
             joinColumns = @JoinColumn(name = "category_category_id"),
             inverseJoinColumns = @JoinColumn(name = "question_question_id"))
-    @JsonBackReference
+    @JsonIgnore
     private Set<Question> questions = new LinkedHashSet<>();
-
 
 }

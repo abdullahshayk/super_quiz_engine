@@ -19,10 +19,6 @@ public class Option {
     @Column(name = "`option`", nullable = false, length = 50)
     private String option;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "question_id", nullable = false)
-    @JsonIgnore
-    private Question question;
 
     @Column(name = "is_correct", nullable = false)
     private Byte isCorrect;
