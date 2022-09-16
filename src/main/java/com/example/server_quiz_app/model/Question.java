@@ -31,27 +31,23 @@ public class Question {
     private String imageUrl;
 
     @Column(name = "difficulty", nullable = false)
-    private Byte difficulty;
+    private Integer difficulty;
 
     @Column(name = "questionType", nullable = false)
-    private Byte questionType;
+    private Integer questionType;
 
     /////
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "teacher_id", nullable = false)
     private Teacher teacher;
 
-
-
-
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "question_category",
             joinColumns = @JoinColumn(name = "question_question_id"),
             inverseJoinColumns = @JoinColumn(name = "category_category_id"))
     private List<Category> categories = new ArrayList<>();
 
     @OneToMany(mappedBy = "question")
-    @JsonManagedReference
     private List<Option> options = new ArrayList<>();
 
 

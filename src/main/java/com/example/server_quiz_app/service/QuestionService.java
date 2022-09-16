@@ -2,6 +2,8 @@ package com.example.server_quiz_app.service;
 
 import java.util.List;
 
+import com.example.server_quiz_app.dao.OptionDao;
+import com.example.server_quiz_app.model.Option;
 import com.example.server_quiz_app.model.Question;
 import com.example.server_quiz_app.model.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,45 +18,74 @@ public class QuestionService {
 
 	@Autowired
 	private QuestionDao questionDao;
+	@Autowired
+	private OptionDao optionDao;
+
+	private Response response=new Response();
+	private HttpStatus httpStatus;
 	public ResponseEntity<Response> getQuestions() {
 		 List<Question> question=null;
-	        Response res=new Response();
-	        HttpStatus httpStatus=null;
-
 	        try{
 	            question= questionDao.findAll();
-	            res.setIsSuccessful(true);
-	            res.setMessage("Successful!");
-	            res.setData(question);
+				response.setIsSuccessful(true);
+				response.setMessage("Successful!");
+				response.setData(question);
 	            httpStatus=HttpStatus.OK;
 	        }catch (Exception e){
 	            e.printStackTrace();
-	            res.setIsSuccessful(false);
-	            res.setMessage("Server Error!");
-	            res.setData(false);
+				response.setIsSuccessful(false);
+				response.setMessage("Server Error!");
+				response.setData(false);
 	            httpStatus=HttpStatus.INTERNAL_SERVER_ERROR;
 	        }
-	        return ResponseEntity.status(httpStatus).body(res);
+	        return ResponseEntity.status(httpStatus).body(response);
 	
 	}
 
 	public ResponseEntity<Response> postQuestion(Question question) {
-		Response res=new Response();
-		HttpStatus httpStatus=null;
 		try{
 			questionDao.save(question);
-			res.setIsSuccessful(true);
-			res.setMessage("Successful!");
-			res.setData(true);
+			question.getOptions().forEach(option -> {
+				Option opt=new Option();
+				opt.setOption(option.getOption());
+				opt.setQuestion(question);
+				opt.setIsCorrect((byte) 0);
+				optionDao.save(opt);
+			});
+			response.setIsSuccessful(true);
+			response.setMessage("Successful!");
+			response.setData(true);
 			httpStatus=HttpStatus.OK;
 		}catch (Exception e){
 			e.printStackTrace();
-			res.setIsSuccessful(false);
-			res.setMessage("Server Error!");
-			res.setData(false);
+			response.setIsSuccessful(false);
+			response.setMessage("Server Error!");
+			response.setData(false);
 			httpStatus=HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		return ResponseEntity.status(httpStatus).body(res);
+		return ResponseEntity.status(httpStatus).body(response);
+	}
 
+	public ResponseEntity<Response> getQuestionOfSpecificTeacher(Integer teacherId) {
+		try{
+			List<Question> question = null;
+			if(questionDao.doesTeacherExist(teacherId)!=null) {
+				question = questionDao.findQuestionsByTeacherId(teacherId);
+				response.setMessage("Successful!");
+			}
+			else {
+				response.setMessage("Teacher does not exist");
+			}
+			response.setIsSuccessful(true);
+			response.setData(question);
+			httpStatus = HttpStatus.OK;
+		}catch (Exception e){
+			e.printStackTrace();
+			response.setIsSuccessful(false);
+			response.setMessage("Server Error!");
+			response.setData(false);
+			httpStatus=HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return ResponseEntity.status(httpStatus).body(response);
 	}
 }
