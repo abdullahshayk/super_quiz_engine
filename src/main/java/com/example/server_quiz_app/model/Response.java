@@ -3,7 +3,6 @@ package com.example.server_quiz_app.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 public class Response {
     private Boolean isSuccessful;
     private String message;

@@ -18,8 +18,6 @@ public class QuestionService {
 
 	@Autowired
 	private QuestionDao questionDao;
-	@Autowired
-	private OptionDao optionDao;
 
 	private Response response=new Response();
 	private HttpStatus httpStatus;
@@ -88,4 +86,22 @@ public class QuestionService {
 		}
 		return ResponseEntity.status(httpStatus).body(response);
 	}
+	public ResponseEntity<Response> getQuestionByCategory(Integer categoryId) {
+		try{
+			List<Question> question = null;
+			question=questionDao.findQuestionsByCategory(categoryId);
+			response.setIsSuccessful(true);
+			response.setData(question);
+			httpStatus = HttpStatus.OK;
+		}catch (Exception e){
+			e.printStackTrace();
+			response.setIsSuccessful(false);
+			response.setMessage("Server Error!");
+			response.setData(false);
+			httpStatus=HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return ResponseEntity.status(httpStatus).body(response);
+	}
+
+
 }

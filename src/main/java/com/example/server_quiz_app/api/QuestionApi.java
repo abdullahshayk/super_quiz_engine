@@ -21,7 +21,10 @@ public class QuestionApi {
     public ResponseEntity<Response> getQuestionsByTeacher(@RequestParam Integer teacherId) {
         return questionService.getQuestionOfSpecificTeacher(teacherId);
     }
-
+    @GetMapping("questions-by-category")
+    public ResponseEntity<Response> getQuestionsByCategory(@RequestParam Integer categoryId) {
+        return questionService.getQuestionByCategory(categoryId);
+    }
     @PostMapping("saveQuestion")
     public ResponseEntity<Response> saveQuestion(@RequestBody Question question){
         return questionService.postQuestion(question);

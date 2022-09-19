@@ -14,6 +14,16 @@ public interface QuestionDao extends JpaRepository<Question,Integer>{
     @Query("select teacher FROM Teacher teacher WHERE teacher.id=:id")
     public Teacher doesTeacherExist(@Param("id") Integer teacherId);
 
+    @Query("select category FROM Category category WHERE category.id=:id")
+    public Teacher doesCategoryExist(@Param("id") Integer categoryId);
+
+    @Query(
+            nativeQuery = true,
+            value = "SELECT q.* from question q join question_category qt ON q.question_id=qt.question_question_id join category c ON qt.category_category_id=c.category_id WHERE c.category_id=:id"
+    )
+    public List<Question> findQuestionsByCategory(@Param("id") Integer categoryId);
+
+
 
 
 
