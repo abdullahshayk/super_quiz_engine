@@ -3,6 +3,7 @@ package com.example.server_quiz_app;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
@@ -30,7 +31,7 @@ public class ServerQuizAppApplication {
 	private ApiInfo apiDetails()
 	{
 
-		return new ApiInfo("Gameshow", "Api Documentation", "1.0", "Gameshow", new springfox.documentation.service.Contact("", "", ""), "", "", Collections.emptyList());
+		return new ApiInfo("Quiz Show", "Api Documentation", "1.0", "Quiz Show", new springfox.documentation.service.Contact("", "", ""), "", "", Collections.emptyList());
 	}
 
 }
