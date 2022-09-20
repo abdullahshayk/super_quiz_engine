@@ -1,8 +1,10 @@
 package com.example.server_quiz_app.service;
 
 import com.example.server_quiz_app.dao.StudentDao;
+import com.example.server_quiz_app.model.Category;
 import com.example.server_quiz_app.model.Response;
 import com.example.server_quiz_app.model.Student;
+import com.example.server_quiz_app.model.StudentCategoryReqBody;
 import com.example.server_quiz_app.security.JwtUtil;
 import com.example.server_quiz_app.utils.EncryptionAndDecryption;
 import org.hibernate.PropertyValueException;
@@ -16,6 +18,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class StudentService  {
@@ -37,11 +41,18 @@ public class StudentService  {
         Response response = new Response();
       try{
          // student.setPassword(passwordEncoder.encode(student.getPassword()));
-          studentDao.save(student);
-          response.setIsSuccessful(true);
-          response.setMessage("Successful!");
-          response.setData(true);
-          httpStatus=HttpStatus.OK;
+          if(studentDao.findStudentByUsername(student.getUsername())!=null){
+              response.setIsSuccessful(false);
+              response.setMessage("User with username already exist");
+              response.setData(false);
+              httpStatus = HttpStatus.CONFLICT;
+          }else {
+              studentDao.save(student);
+              response.setIsSuccessful(true);
+              response.setMessage("Successful!");
+              response.setData(true);
+              httpStatus = HttpStatus.OK;
+          }
       }
       catch (DataIntegrityViolationException e){
           e.printStackTrace();
@@ -59,6 +70,35 @@ public class StudentService  {
       }
         return ResponseEntity.status(httpStatus).body(response);
       }
+
+    public ResponseEntity<Response> addCategories(StudentCategoryReqBody body) {
+        Response response = new Response();
+        try{
+            Student student=studentDao.findStudentByUsername(body.getUsername());
+            if(student==null){
+                response.setIsSuccessful(false);
+                response.setMessage("User with this username not found!");
+                response.setData(null);
+                httpStatus=HttpStatus.NOT_FOUND;
+            }
+            else{
+                student.setCategories(body.getCategoryList());
+                studentDao.save(student);
+                response.setIsSuccessful(true);
+                response.setMessage("Categories saved");
+                response.setData(true);
+                httpStatus=HttpStatus.OK;
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            response.setIsSuccessful(false);
+            response.setMessage("Server Error!");
+            response.setData(false);
+            httpStatus=HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return ResponseEntity.status(httpStatus).body(response);
+    }
 
 
 

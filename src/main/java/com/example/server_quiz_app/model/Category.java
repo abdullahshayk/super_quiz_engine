@@ -19,7 +19,7 @@ public class Category {
     @Column(name = "category_id", nullable = false)
     private Integer id;
 
-    @Column(name = "category_name", nullable = false, length = 45)
+    @Column(name = "category_name", nullable = true, length = 45)
     private String categoryName;
 
     @ManyToMany

@@ -24,7 +24,7 @@ public class ServerQuizAppApplication {
 	public Docket swaggerConfiguration()
 	{
 
-		return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.basePackage("com.example.server_quiz_app.api")).build().apiInfo(apiDetails());
+		return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.basePackage("com.example.server_quiz_app.controller")).build().apiInfo(apiDetails());
 
 	}
 

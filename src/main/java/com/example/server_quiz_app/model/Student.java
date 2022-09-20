@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -23,6 +25,12 @@ public class Student {
 
     @Column(name = "username", nullable = false, length = 75)
     private String username;
+
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(name = "student_category",
+            joinColumns = @JoinColumn(name = "student_student_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_category_id"))
+    private List<Category> categories = new ArrayList<>();
 
 
 
