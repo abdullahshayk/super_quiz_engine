@@ -20,4 +20,8 @@ public class StudentApi {
     public ResponseEntity<Response> authenticateStudent(@RequestBody Student student) throws Exception {
         return studentService.authenticateStudent(student);
     }
+    @PostMapping("signup")
+    public ResponseEntity<Response>  signUpStudent(@RequestBody Student student)  {
+        return studentService.signUpStudent(student);
+    }
 }
