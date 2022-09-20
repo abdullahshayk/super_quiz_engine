@@ -1,8 +1,9 @@
-package com.example.server_quiz_app.api;
+package com.example.server_quiz_app.controller;
 
 import com.example.server_quiz_app.model.Question;
 import com.example.server_quiz_app.model.Response;
 import com.example.server_quiz_app.service.QuestionService;
+import net.bytebuddy.build.RepeatedAnnotationPlugin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

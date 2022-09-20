@@ -1,8 +1,6 @@
 package com.example.server_quiz_app.model;
 
 import javax.persistence.*;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "student")
@@ -12,14 +10,17 @@ public class Student {
     @Column(name = "student_id", nullable = false)
     private Integer id;
 
-    @Column(name = "name", nullable = false, length = 45)
+    @Column(name = "name", length = 45)
     private String name;
 
-    @ManyToMany
-    @JoinTable(name = "student_category",
-            joinColumns = @JoinColumn(name = "student_student_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_category_id"))
-    private Set<Category> categories = new LinkedHashSet<>();
+    @Column(name = "email", nullable = false, length = 75)
+    private String email;
+
+    @Column(name = "password", nullable = false, length = 50)
+    private String password;
+
+    @Column(name = "username", nullable = false, length = 75)
+    private String username;
 
     public Integer getId() {
         return id;
@@ -37,12 +38,28 @@ public class Student {
         this.name = name;
     }
 
-    public Set<Category> getCategories() {
-        return categories;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCategories(Set<Category> categories) {
-        this.categories = categories;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
 }

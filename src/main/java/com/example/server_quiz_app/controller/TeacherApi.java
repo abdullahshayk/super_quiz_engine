@@ -1,6 +1,5 @@
-package com.example.server_quiz_app.api;
+package com.example.server_quiz_app.controller;
 
-import com.example.server_quiz_app.model.Question;
 import com.example.server_quiz_app.model.Response;
 import com.example.server_quiz_app.model.Teacher;
 import com.example.server_quiz_app.service.TeacherService;

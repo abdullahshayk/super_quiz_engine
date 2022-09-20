@@ -21,7 +21,7 @@ public class Option {
 
 
     @Column(name = "is_correct", nullable = false)
-    private Byte isCorrect;
+    private Boolean isCorrect;
 
 
 
