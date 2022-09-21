@@ -1,10 +1,8 @@
 package com.example.server_quiz_app.service;
 
+import com.example.server_quiz_app.dao.CategoryDao;
 import com.example.server_quiz_app.dao.StudentDao;
-import com.example.server_quiz_app.model.Category;
-import com.example.server_quiz_app.model.Response;
-import com.example.server_quiz_app.model.Student;
-import com.example.server_quiz_app.model.StudentCategoryReqBody;
+import com.example.server_quiz_app.model.*;
 import com.example.server_quiz_app.security.JwtUtil;
 import com.example.server_quiz_app.utils.EncryptionAndDecryption;
 import org.hibernate.PropertyValueException;
@@ -34,6 +32,8 @@ public class StudentService  {
     @Autowired
     private PasswordEncoder passwordEncoder;
     private HttpStatus httpStatus;
+    @Autowired
+    private CategoryDao categoryDao;
 
 
 
@@ -128,4 +128,6 @@ public class StudentService  {
         response.setData(jwt);
         return ResponseEntity.ok(response);
     }
+
+
 }

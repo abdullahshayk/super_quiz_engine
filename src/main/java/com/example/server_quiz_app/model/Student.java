@@ -26,7 +26,7 @@ public class Student {
     @Column(name = "username", nullable = false, length = 75)
     private String username;
 
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "student_category",
             joinColumns = @JoinColumn(name = "student_student_id"),
             inverseJoinColumns = @JoinColumn(name = "category_category_id"))
