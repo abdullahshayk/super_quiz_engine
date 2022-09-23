@@ -1,12 +1,18 @@
 package com.example.server_quiz_app.controller;
 
+import com.example.server_quiz_app.model.GetQuestionByCategoryAndTypeRequest;
 import com.example.server_quiz_app.model.Question;
 import com.example.server_quiz_app.model.Response;
 import com.example.server_quiz_app.service.QuestionService;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import net.bytebuddy.build.RepeatedAnnotationPlugin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -23,9 +29,14 @@ public class QuestionApi {
         return questionService.getQuestionOfSpecificTeacher(teacherId);
     }
     @GetMapping("questions-by-category")
-    public ResponseEntity<Response> getQuestionsByCategory(@RequestParam Integer categoryId) {
-        return questionService.getQuestionByCategory(categoryId);
+    public ResponseEntity<Response> getQuestionsByCategoryAndType(
+            @RequestParam Integer offset,
+            @RequestParam Integer pageSize,
+            @RequestBody GetQuestionByCategoryAndTypeRequest request
+            ) {
+        return questionService.getQuestionsByCategoryAndType(request,offset,pageSize);
     }
+
     @PostMapping("saveQuestion")
     public ResponseEntity<Response> saveQuestion(@RequestBody Question question){
         return questionService.postQuestion(question);

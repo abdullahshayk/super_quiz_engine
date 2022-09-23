@@ -2,6 +2,8 @@ package com.example.server_quiz_app.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 public class Response {
     private Boolean isSuccessful;
@@ -26,4 +28,6 @@ public class Response {
     public void setData(Object data) {
         this.data = data;
     }
+
+
 }
