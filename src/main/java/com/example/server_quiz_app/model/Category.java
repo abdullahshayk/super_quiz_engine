@@ -22,17 +22,11 @@ public class Category {
     @Column(name = "category_name", nullable = true, length = 45)
     private String categoryName;
 
-    @ManyToMany
-    @JoinTable(name = "student_category",
-            joinColumns = @JoinColumn(name = "category_category_id"),
-            inverseJoinColumns = @JoinColumn(name = "student_student_id"))
+    @ManyToMany(mappedBy = "categories")
     @JsonIgnore
     private Set<Student> students = new LinkedHashSet<>();
 
-    @ManyToMany
-    @JoinTable(name = "question_category",
-            joinColumns = @JoinColumn(name = "category_category_id"),
-            inverseJoinColumns = @JoinColumn(name = "question_question_id"))
+    @ManyToMany(mappedBy = "categories")
     @JsonIgnore
     private Set<Question> questions = new LinkedHashSet<>();
 

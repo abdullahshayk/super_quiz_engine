@@ -3,6 +3,8 @@ package com.example.server_quiz_app.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 public class Response {
