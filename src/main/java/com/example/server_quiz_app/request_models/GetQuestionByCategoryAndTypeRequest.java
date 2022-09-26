@@ -1,4 +1,4 @@
-package com.example.server_quiz_app.model;
+package com.example.server_quiz_app.request_models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

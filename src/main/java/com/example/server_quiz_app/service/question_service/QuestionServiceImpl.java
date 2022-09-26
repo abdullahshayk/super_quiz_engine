@@ -1,8 +1,8 @@
-package com.example.server_quiz_app.service;
+package com.example.server_quiz_app.service.question_service;
 
 import java.util.List;
 
-import com.example.server_quiz_app.model.GetQuestionByCategoryAndTypeRequest;
+import com.example.server_quiz_app.request_models.GetQuestionByCategoryAndTypeRequest;
 import com.example.server_quiz_app.model.Question;
 import com.example.server_quiz_app.model.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +14,14 @@ import org.springframework.stereotype.Service;
 import com.example.server_quiz_app.dao.QuestionDao;
 
 @Service
-public class QuestionService {
+public class QuestionServiceImpl implements QuestionService{
 
 	@Autowired
 	private QuestionDao questionDao;
 
 	private Response response=new Response();
 	private HttpStatus httpStatus;
+	@Override
 	public ResponseEntity<Response> getQuestions() {
 		 List<Question> question=null;
 	        try{
@@ -39,7 +40,7 @@ public class QuestionService {
 	        return ResponseEntity.status(httpStatus).body(response);
 	
 	}
-
+	@Override
 	public ResponseEntity<Response> postQuestion(Question question) {
 		try{
 			questionDao.save(question);
@@ -56,7 +57,7 @@ public class QuestionService {
 		}
 		return ResponseEntity.status(httpStatus).body(response);
 	}
-
+	@Override
 	public ResponseEntity<Response> getQuestionOfSpecificTeacher(Integer teacherId) {
 		try{
 			List<Question> question = null;
@@ -84,6 +85,7 @@ public class QuestionService {
 //			2->Mcques-multi
 //			3->fill in the
 
+	@Override
 	public ResponseEntity<Response> getQuestionsByCategoryAndType(GetQuestionByCategoryAndTypeRequest request, Integer offset, Integer pageSize) {
 		List<Integer> categoryId=request.getCategorys();
 		List<Integer> questionType=request.getTypes();
@@ -124,5 +126,4 @@ public class QuestionService {
 	}
 
 }
-
 

@@ -1,4 +1,4 @@
-package com.example.server_quiz_app.service;
+package com.example.server_quiz_app.service.option_service;
 
 import com.example.server_quiz_app.dao.OptionDao;
 import com.example.server_quiz_app.model.Option;
@@ -11,48 +11,50 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class OptionService {
+public class OptionServiceImpl implements OptionService {
     @Autowired
     private OptionDao optionDao;
 
+    @Override
     public ResponseEntity<Response> getOptions() {
-        List<Option> products=null;
-        Response res=new Response();
-        HttpStatus httpStatus=null;
+        List<Option> products = null;
+        Response res = new Response();
+        HttpStatus httpStatus = null;
 
-        try{
-            products= optionDao.findAll();
+        try {
+            products = optionDao.findAll();
             res.setIsSuccessful(true);
             res.setMessage("Successful!");
             res.setData(products);
-            httpStatus=HttpStatus.OK;
-        }catch (Exception e){
+            httpStatus = HttpStatus.OK;
+        } catch (Exception e) {
             e.printStackTrace();
             res.setIsSuccessful(false);
             res.setMessage("Server Error!");
             res.setData(false);
-            httpStatus=HttpStatus.INTERNAL_SERVER_ERROR;
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return ResponseEntity.status(httpStatus).body(res);
 
     }
 
+    @Override
     public ResponseEntity<Response> saveOption(Option option) {
-        Response response=new Response();
-         HttpStatus httpStatus=null;
+        Response response = new Response();
+        HttpStatus httpStatus = null;
 
-        try{
+        try {
             optionDao.save(option);
             response.setIsSuccessful(true);
             response.setMessage("Successful!");
             response.setData(true);
-            httpStatus=HttpStatus.OK;
-        }catch (Exception e){
+            httpStatus = HttpStatus.OK;
+        } catch (Exception e) {
             e.printStackTrace();
             response.setIsSuccessful(false);
             response.setMessage("Server Error!");
             response.setData(false);
-            httpStatus=HttpStatus.INTERNAL_SERVER_ERROR;
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return ResponseEntity.status(httpStatus).body(response);
     }

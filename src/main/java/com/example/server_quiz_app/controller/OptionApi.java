@@ -2,7 +2,8 @@ package com.example.server_quiz_app.controller;
 
 import com.example.server_quiz_app.model.Option;
 import com.example.server_quiz_app.model.Response;
-import com.example.server_quiz_app.service.OptionService;
+import com.example.server_quiz_app.service.option_service.OptionService;
+import com.example.server_quiz_app.service.option_service.OptionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

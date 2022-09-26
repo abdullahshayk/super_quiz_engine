@@ -2,7 +2,9 @@ package com.example.server_quiz_app.controller;
 
 import com.example.server_quiz_app.model.Response;
 import com.example.server_quiz_app.model.Teacher;
-import com.example.server_quiz_app.service.TeacherService;
+import com.example.server_quiz_app.request_models.UserCategoryReqBody;
+import com.example.server_quiz_app.service.teacher_service.TeacherService;
+import com.example.server_quiz_app.service.teacher_service.TeacherServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,5 +26,10 @@ public class TeacherApi {
     @PostMapping("saveTeacher")
     public ResponseEntity<Response> saveTeacher(@RequestBody Teacher teacher){
         return teacherService.postTeacher(teacher);
+    }
+
+    @PostMapping("save-teacher-categories")
+    public ResponseEntity<Response>  saveStudentCategories(@RequestBody UserCategoryReqBody userCategoryReqBody)  {
+        return teacherService.addCategories(userCategoryReqBody);
     }
 }

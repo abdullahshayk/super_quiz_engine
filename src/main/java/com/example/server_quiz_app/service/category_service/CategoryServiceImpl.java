@@ -1,4 +1,4 @@
-package com.example.server_quiz_app.service;
+package com.example.server_quiz_app.service.category_service;
 
 import java.util.List;
 
@@ -12,11 +12,12 @@ import org.springframework.stereotype.Service;
 import com.example.server_quiz_app.dao.CategoryDao;
 
 @Service
-public class CategoryService {
+public class CategoryServiceImpl implements CategoryService{
 
 	@Autowired
 	private CategoryDao categoryDao;
 
+	@Override
 	public ResponseEntity<Response> getCategories() {
 		 List<Category> products=null;
 	        Response res=new Response();
@@ -39,6 +40,7 @@ public class CategoryService {
 
 	}
 
+	@Override
 	public ResponseEntity<Response> getCategoriesOfStudent(int id) {
 		List<Category> categories=null;
 		HttpStatus httpStatus=null;
