@@ -3,26 +3,26 @@ package com.example.server_quiz_app.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "question_category")
-public class QuestionCategory {
+@Table(name = "teacher_category")
+public class TeacherCategory {
     @EmbeddedId
-    private QuestionCategoryId id;
+    private TeacherCategoryId id;
 
     @MapsId("categoryCategoryId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "category_category_id", nullable = false)
     private Category categoryCategory;
 
-    @MapsId("questionQuestionId")
+    @MapsId("teacherTeacherId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "question_question_id", nullable = false)
-    private Question questionQuestion;
+    @JoinColumn(name = "teacher_teacher_id", nullable = false)
+    private Teacher teacherTeacher;
 
-    public QuestionCategoryId getId() {
+    public TeacherCategoryId getId() {
         return id;
     }
 
-    public void setId(QuestionCategoryId id) {
+    public void setId(TeacherCategoryId id) {
         this.id = id;
     }
 
@@ -34,12 +34,12 @@ public class QuestionCategory {
         this.categoryCategory = categoryCategory;
     }
 
-    public Question getQuestionQuestion() {
-        return questionQuestion;
+    public Teacher getTeacherTeacher() {
+        return teacherTeacher;
     }
 
-    public void setQuestionQuestion(Question questionQuestion) {
-        this.questionQuestion = questionQuestion;
+    public void setTeacherTeacher(Teacher teacherTeacher) {
+        this.teacherTeacher = teacherTeacher;
     }
 
 }

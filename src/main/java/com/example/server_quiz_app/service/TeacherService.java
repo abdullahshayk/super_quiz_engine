@@ -2,7 +2,6 @@ package com.example.server_quiz_app.service;
 
 import java.util.List;
 
-import com.example.server_quiz_app.model.Question;
 import com.example.server_quiz_app.model.Response;
 import com.example.server_quiz_app.model.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,7 @@ import com.example.server_quiz_app.dao.TeacherDao;
 public class TeacherService {
 	@Autowired
 	private TeacherDao teacherDao;
-	
+
 	public ResponseEntity<Response> getTeachers() {
 		 List<Teacher> teachers=null;
 	        Response res=new Response();
@@ -35,7 +34,7 @@ public class TeacherService {
 	            httpStatus=HttpStatus.INTERNAL_SERVER_ERROR;
 	        }
 	        return ResponseEntity.status(httpStatus).body(res);
-	
+
 	}
 
 	public ResponseEntity<Response> postTeacher(Teacher teacher) {

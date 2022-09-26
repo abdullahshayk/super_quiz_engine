@@ -3,35 +3,35 @@ package com.example.server_quiz_app.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "question_category")
-public class QuestionCategory {
+@Table(name = "student_like_question")
+public class StudentLikeQuestion {
     @EmbeddedId
-    private QuestionCategoryId id;
+    private StudentLikeQuestionId id;
 
-    @MapsId("categoryCategoryId")
+    @MapsId("studentStudentId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "category_category_id", nullable = false)
-    private Category categoryCategory;
+    @JoinColumn(name = "student_student_id", nullable = false)
+    private Student studentStudent;
 
     @MapsId("questionQuestionId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "question_question_id", nullable = false)
     private Question questionQuestion;
 
-    public QuestionCategoryId getId() {
+    public StudentLikeQuestionId getId() {
         return id;
     }
 
-    public void setId(QuestionCategoryId id) {
+    public void setId(StudentLikeQuestionId id) {
         this.id = id;
     }
 
-    public Category getCategoryCategory() {
-        return categoryCategory;
+    public Student getStudentStudent() {
+        return studentStudent;
     }
 
-    public void setCategoryCategory(Category categoryCategory) {
-        this.categoryCategory = categoryCategory;
+    public void setStudentStudent(Student studentStudent) {
+        this.studentStudent = studentStudent;
     }
 
     public Question getQuestionQuestion() {

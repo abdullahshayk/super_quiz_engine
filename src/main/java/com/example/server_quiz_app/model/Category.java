@@ -1,6 +1,5 @@
 package com.example.server_quiz_app.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,8 +18,13 @@ public class Category {
     @Column(name = "category_id", nullable = false)
     private Integer id;
 
-    @Column(name = "category_name", nullable = true, length = 45)
+    @Column(name = "category_name", length = 45)
     private String categoryName;
+
+    @ManyToMany(mappedBy = "categories")
+    @JsonIgnore
+    private Set<Question> questions = new LinkedHashSet<>();
+
 
     @ManyToMany(mappedBy = "categories")
     @JsonIgnore
@@ -28,6 +32,6 @@ public class Category {
 
     @ManyToMany(mappedBy = "categories")
     @JsonIgnore
-    private Set<Question> questions = new LinkedHashSet<>();
+    private Set<Teacher> teacher = new LinkedHashSet<>();
 
 }

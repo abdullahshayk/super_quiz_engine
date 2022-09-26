@@ -20,17 +20,44 @@ public class Student {
     @Column(name = "name", length = 45)
     private String name;
 
-    @Column(name = "password", nullable = false, length = 250)
+    @Column(name = "password", nullable = false, length = 75)
     private String password;
 
     @Column(name = "username", nullable = false, length = 75)
     private String username;
+
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "student_category",
             joinColumns = @JoinColumn(name = "student_student_id"),
             inverseJoinColumns = @JoinColumn(name = "category_category_id"))
     private List<Category> categories = new ArrayList<>();
+
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(name = "student_like_question",
+            joinColumns = @JoinColumn(name = "student_student_id"),
+            inverseJoinColumns = @JoinColumn(name = "question_question_id"))
+    private List<Question> likedQuestion = new ArrayList<>();
+
+    @ManyToMany(cascade = {
+            CascadeType.MERGE,
+            CascadeType.PERSIST
+    })
+    @JoinTable(name = "student_attempted_question",
+            joinColumns = @JoinColumn(name = "student_student_id"),
+            inverseJoinColumns = @JoinColumn(name = "question_question_id"))
+    private List<Question> attemptedQuestion = new ArrayList<>();
+
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(name = "student_follow_teacher",
+            joinColumns = @JoinColumn(name = "student_student_id"),
+            inverseJoinColumns = @JoinColumn(name = "teacher_teacher_id"))
+    private List<Teacher> followedTeachers = new ArrayList<>();
+
+
+
+
+
 
 
 

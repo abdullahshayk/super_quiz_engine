@@ -2,7 +2,6 @@ package com.example.server_quiz_app.service;
 
 import com.example.server_quiz_app.dao.OptionDao;
 import com.example.server_quiz_app.model.Option;
-import com.example.server_quiz_app.model.Question;
 import com.example.server_quiz_app.model.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

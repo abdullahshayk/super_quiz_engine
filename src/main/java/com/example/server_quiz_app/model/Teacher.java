@@ -1,16 +1,12 @@
 package com.example.server_quiz_app.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -25,10 +21,17 @@ public class Teacher {
     @Column(name = "name", nullable = false, length = 45)
     private String name;
 
-    @OneToMany(mappedBy = "teacher",cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "teacher_category",
+            joinColumns = @JoinColumn(name = "teacher_teacher_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_category_id"))
+    private List<Category> categories = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "teacher")
     @JsonIgnore
     private List<Question> questions = new ArrayList<>();
 
-
+    @ManyToMany(mappedBy = "followedTeachers")
+    private List<Student> studentsFollowed = new ArrayList<>();
 
 }

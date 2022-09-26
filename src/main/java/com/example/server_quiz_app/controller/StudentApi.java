@@ -1,6 +1,5 @@
 package com.example.server_quiz_app.controller;
 
-import com.example.server_quiz_app.model.Category;
 import com.example.server_quiz_app.model.Response;
 import com.example.server_quiz_app.model.Student;
 import com.example.server_quiz_app.model.StudentCategoryReqBody;
@@ -8,8 +7,6 @@ import com.example.server_quiz_app.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 public class StudentApi {

@@ -4,26 +4,17 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Entity;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
 public class QuestionCategoryId implements Serializable {
     private static final long serialVersionUID = 5410468377194957371L;
-    @Column(name = "question_question_id", nullable = false)
-    private Integer questionQuestionId;
-
     @Column(name = "category_category_id", nullable = false)
     private Integer categoryCategoryId;
 
-    public Integer getQuestionQuestionId() {
-        return questionQuestionId;
-    }
-
-    public void setQuestionQuestionId(Integer questionQuestionId) {
-        this.questionQuestionId = questionQuestionId;
-    }
+    @Column(name = "question_question_id", nullable = false)
+    private Integer questionQuestionId;
 
     public Integer getCategoryCategoryId() {
         return categoryCategoryId;
@@ -31,6 +22,14 @@ public class QuestionCategoryId implements Serializable {
 
     public void setCategoryCategoryId(Integer categoryCategoryId) {
         this.categoryCategoryId = categoryCategoryId;
+    }
+
+    public Integer getQuestionQuestionId() {
+        return questionQuestionId;
+    }
+
+    public void setQuestionQuestionId(Integer questionQuestionId) {
+        this.questionQuestionId = questionQuestionId;
     }
 
     @Override

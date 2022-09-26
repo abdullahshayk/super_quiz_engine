@@ -8,21 +8,13 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
-public class StudentCategoryId implements Serializable {
-    private static final long serialVersionUID = 1078247227716187288L;
-    @Column(name = "category_category_id", nullable = false)
-    private Integer categoryCategoryId;
-
+public class StudentFollowTeacherId implements Serializable {
+    private static final long serialVersionUID = -1541633739260185144L;
     @Column(name = "student_student_id", nullable = false)
     private Integer studentStudentId;
 
-    public Integer getCategoryCategoryId() {
-        return categoryCategoryId;
-    }
-
-    public void setCategoryCategoryId(Integer categoryCategoryId) {
-        this.categoryCategoryId = categoryCategoryId;
-    }
+    @Column(name = "teacher_teacher_id", nullable = false)
+    private Integer teacherTeacherId;
 
     public Integer getStudentStudentId() {
         return studentStudentId;
@@ -32,18 +24,26 @@ public class StudentCategoryId implements Serializable {
         this.studentStudentId = studentStudentId;
     }
 
+    public Integer getTeacherTeacherId() {
+        return teacherTeacherId;
+    }
+
+    public void setTeacherTeacherId(Integer teacherTeacherId) {
+        this.teacherTeacherId = teacherTeacherId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        StudentCategoryId entity = (StudentCategoryId) o;
+        StudentFollowTeacherId entity = (StudentFollowTeacherId) o;
         return Objects.equals(this.studentStudentId, entity.studentStudentId) &&
-                Objects.equals(this.categoryCategoryId, entity.categoryCategoryId);
+                Objects.equals(this.teacherTeacherId, entity.teacherTeacherId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(studentStudentId, categoryCategoryId);
+        return Objects.hash(studentStudentId, teacherTeacherId);
     }
 
 }

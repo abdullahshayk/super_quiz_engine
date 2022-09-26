@@ -8,21 +8,13 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
-public class StudentCategoryId implements Serializable {
-    private static final long serialVersionUID = 1078247227716187288L;
-    @Column(name = "category_category_id", nullable = false)
-    private Integer categoryCategoryId;
-
+public class StudentLikeQuestionId implements Serializable {
+    private static final long serialVersionUID = -6599710718403868370L;
     @Column(name = "student_student_id", nullable = false)
     private Integer studentStudentId;
 
-    public Integer getCategoryCategoryId() {
-        return categoryCategoryId;
-    }
-
-    public void setCategoryCategoryId(Integer categoryCategoryId) {
-        this.categoryCategoryId = categoryCategoryId;
-    }
+    @Column(name = "question_question_id", nullable = false)
+    private Integer questionQuestionId;
 
     public Integer getStudentStudentId() {
         return studentStudentId;
@@ -32,18 +24,26 @@ public class StudentCategoryId implements Serializable {
         this.studentStudentId = studentStudentId;
     }
 
+    public Integer getQuestionQuestionId() {
+        return questionQuestionId;
+    }
+
+    public void setQuestionQuestionId(Integer questionQuestionId) {
+        this.questionQuestionId = questionQuestionId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        StudentCategoryId entity = (StudentCategoryId) o;
+        StudentLikeQuestionId entity = (StudentLikeQuestionId) o;
         return Objects.equals(this.studentStudentId, entity.studentStudentId) &&
-                Objects.equals(this.categoryCategoryId, entity.categoryCategoryId);
+                Objects.equals(this.questionQuestionId, entity.questionQuestionId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(studentStudentId, categoryCategoryId);
+        return Objects.hash(studentStudentId, questionQuestionId);
     }
 
 }

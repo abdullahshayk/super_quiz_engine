@@ -4,15 +4,9 @@ import com.example.server_quiz_app.model.GetQuestionByCategoryAndTypeRequest;
 import com.example.server_quiz_app.model.Question;
 import com.example.server_quiz_app.model.Response;
 import com.example.server_quiz_app.service.QuestionService;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import net.bytebuddy.build.RepeatedAnnotationPlugin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 @RestController

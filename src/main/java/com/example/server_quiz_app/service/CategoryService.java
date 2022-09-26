@@ -13,10 +13,10 @@ import com.example.server_quiz_app.dao.CategoryDao;
 
 @Service
 public class CategoryService {
-	
+
 	@Autowired
 	private CategoryDao categoryDao;
-	
+
 	public ResponseEntity<Response> getCategories() {
 		 List<Category> products=null;
 	        Response res=new Response();
@@ -36,7 +36,7 @@ public class CategoryService {
 	            httpStatus=HttpStatus.INTERNAL_SERVER_ERROR;
 	        }
 	        return ResponseEntity.status(httpStatus).body(res);
-	
+
 	}
 
 	public ResponseEntity<Response> getCategoriesOfStudent(int id) {
@@ -61,7 +61,7 @@ public class CategoryService {
 		return ResponseEntity.status(httpStatus).body(response);
 
 	}
-	
-	
+
+
 
 }
