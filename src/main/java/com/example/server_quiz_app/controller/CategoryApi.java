@@ -6,6 +6,7 @@ import com.example.server_quiz_app.service.category_service.CategoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,8 +20,13 @@ public class CategoryApi {
         return categoryService.getCategories();
     }
 
-    @GetMapping("category-student")
-    public ResponseEntity<Response> getCategoryOfStudent(@RequestParam int studentId) {
-        return categoryService.getCategoriesOfStudent(studentId);
+    @GetMapping("category-student/{id}")
+    public ResponseEntity<Response> getCategoryOfStudent(@PathVariable int id) {
+        return categoryService.getCategoriesOfStudent(id);
+    }
+
+    @GetMapping("category-teacher/{id}")
+    public ResponseEntity<Response> getCategoryOfTeacher(@PathVariable int id) {
+        return categoryService.getCategoriesOfTeacher(id);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.server_quiz_app.request_models;
 
 import com.example.server_quiz_app.model.Category;
+import com.example.server_quiz_app.model.Teacher;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserCategoryReqBody {
-    String username;
-    List<Category> categoryList;
+public class FollowTeacher {
+    Integer studentId;
+    Integer teacherId;
 }

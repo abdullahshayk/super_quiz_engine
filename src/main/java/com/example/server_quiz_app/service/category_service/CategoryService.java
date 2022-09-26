@@ -7,4 +7,6 @@ import org.springframework.stereotype.Service;
 public interface CategoryService {
     ResponseEntity<Response> getCategories();
     ResponseEntity<Response> getCategoriesOfStudent(int id);
+    ResponseEntity<Response> getCategoriesOfTeacher(int id);
+
     }

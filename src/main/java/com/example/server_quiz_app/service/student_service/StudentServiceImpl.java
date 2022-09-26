@@ -2,8 +2,10 @@ package com.example.server_quiz_app.service.student_service;
 
 import com.example.server_quiz_app.dao.CategoryDao;
 import com.example.server_quiz_app.dao.StudentDao;
+import com.example.server_quiz_app.dao.TeacherDao;
 import com.example.server_quiz_app.model.*;
-import com.example.server_quiz_app.request_models.UserCategoryReqBody;
+import com.example.server_quiz_app.request_models.FollowTeacher;
+import com.example.server_quiz_app.request_models.UserCategory;
 import com.example.server_quiz_app.security.JwtUtil;
 import com.example.server_quiz_app.service.MyUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +19,18 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StudentServiceImpl implements StudentService{
     @Autowired
     private StudentDao studentDao;
+
+    @Autowired
+    private TeacherDao teacherDao;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -119,7 +127,7 @@ public class StudentServiceImpl implements StudentService{
         return ResponseEntity.ok(response);
     }
     @Override
-    public ResponseEntity<Response> addCategories(UserCategoryReqBody body) {
+    public ResponseEntity<Response> addCategories(UserCategory body) {
         Response response = new Response();
         try{
             Student student=studentDao.findStudentByUsername(body.getUsername());
@@ -149,22 +157,28 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public ResponseEntity<Response> followTeacher(UserCategoryReqBody body) {
+    public ResponseEntity<Response> followTeacher(FollowTeacher body) {
         Response response = new Response();
         try{
-            Student student=studentDao.findStudentByUsername(body.getUsername());
-            if(student==null){
+            Optional<Student> student=studentDao.findById(body.getStudentId());
+            if(!student.isPresent()){
                 response.setIsSuccessful(false);
-                response.setMessage("User with this username not found!");
+                response.setMessage("Student does not Exists!");
                 response.setData(null);
                 httpStatus=HttpStatus.NOT_FOUND;
             }
             else{
-                student.setCategories(body.getCategoryList());
-                studentDao.save(student);
+                Optional<Teacher> teacher=teacherDao.findById(body.getTeacherId());
+                Student studentToUpdate=student.get();
+
+                List<Teacher> teachersTemp=new ArrayList<>();
+                teachersTemp.add(teacher.get());
+                studentToUpdate.setFollowedTeachers(teachersTemp);
+                studentDao.save(studentToUpdate);
                 response.setIsSuccessful(true);
-                response.setMessage("Categories saved");
+                response.setMessage("Teacher Followed");
                 response.setData(true);
+                studentToUpdate.getFollowedTeachers().get(0).getName();
                 httpStatus=HttpStatus.OK;
             }
         }

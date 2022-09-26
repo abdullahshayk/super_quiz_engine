@@ -25,6 +25,7 @@ public class Teacher {
     @JoinTable(name = "teacher_category",
             joinColumns = @JoinColumn(name = "teacher_teacher_id"),
             inverseJoinColumns = @JoinColumn(name = "category_category_id"))
+    @JsonIgnore
     private List<Category> categories = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "teacher")
@@ -32,6 +33,7 @@ public class Teacher {
     private List<Question> questions = new ArrayList<>();
 
     @ManyToMany(mappedBy = "followedTeachers")
+    @JsonIgnore
     private List<Student> studentsFollowed = new ArrayList<>();
 
 }

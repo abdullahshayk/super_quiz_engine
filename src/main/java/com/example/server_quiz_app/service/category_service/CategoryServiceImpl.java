@@ -37,7 +37,6 @@ public class CategoryServiceImpl implements CategoryService{
 	            httpStatus=HttpStatus.INTERNAL_SERVER_ERROR;
 	        }
 	        return ResponseEntity.status(httpStatus).body(res);
-
 	}
 
 	@Override
@@ -64,6 +63,25 @@ public class CategoryServiceImpl implements CategoryService{
 
 	}
 
+	@Override
+	public ResponseEntity<Response> getCategoriesOfTeacher(int id) {
+		List<Category> categories=null;
+		HttpStatus httpStatus=null;
+		Response response = new Response();
+		try{
+			categories=categoryDao.getCategoriesOfTeacher(id);
+			response.setIsSuccessful(true);
+			response.setMessage("Successful!");
+			response.setData(categories);
+			httpStatus=HttpStatus.OK;
+		}catch (Exception e){
+			e.printStackTrace();
+			response.setIsSuccessful(false);
+			response.setMessage("Server Error!");
+			response.setData(false);
+			httpStatus=HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return ResponseEntity.status(httpStatus).body(response);	}
 
 
 }

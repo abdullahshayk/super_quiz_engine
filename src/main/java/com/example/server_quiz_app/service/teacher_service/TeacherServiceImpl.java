@@ -3,7 +3,7 @@ package com.example.server_quiz_app.service.teacher_service;
 import java.util.List;
 
 import com.example.server_quiz_app.model.Response;
-import com.example.server_quiz_app.request_models.UserCategoryReqBody;
+import com.example.server_quiz_app.request_models.UserCategory;
 import com.example.server_quiz_app.model.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -62,7 +62,7 @@ public class TeacherServiceImpl implements TeacherService{
 	}
 
 	@Override
-	public ResponseEntity<Response> addCategories(UserCategoryReqBody body) {
+	public ResponseEntity<Response> addCategories(UserCategory body) {
 		Response response = new Response();
 		try{
 			Teacher teacher=teacherDao.findTeacherByName(body.getUsername());

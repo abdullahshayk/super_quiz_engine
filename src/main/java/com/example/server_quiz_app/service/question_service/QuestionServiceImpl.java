@@ -2,7 +2,7 @@ package com.example.server_quiz_app.service.question_service;
 
 import java.util.List;
 
-import com.example.server_quiz_app.request_models.GetQuestionByCategoryAndTypeRequest;
+import com.example.server_quiz_app.request_models.GetQuestionByCategoryAndType;
 import com.example.server_quiz_app.model.Question;
 import com.example.server_quiz_app.model.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,7 +86,7 @@ public class QuestionServiceImpl implements QuestionService{
 //			3->fill in the
 
 	@Override
-	public ResponseEntity<Response> getQuestionsByCategoryAndType(GetQuestionByCategoryAndTypeRequest request, Integer offset, Integer pageSize) {
+	public ResponseEntity<Response> getQuestionsByCategoryAndType(GetQuestionByCategoryAndType request, Integer offset, Integer pageSize) {
 		List<Integer> categoryId=request.getCategorys();
 		List<Integer> questionType=request.getTypes();
 		if((!inRange(categoryId,1,4))){
