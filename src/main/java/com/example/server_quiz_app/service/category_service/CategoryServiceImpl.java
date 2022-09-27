@@ -39,49 +39,49 @@ public class CategoryServiceImpl implements CategoryService{
 	        return ResponseEntity.status(httpStatus).body(res);
 	}
 
-	@Override
-	public ResponseEntity<Response> getCategoriesOfStudent(int id) {
-		List<Category> categories=null;
-		HttpStatus httpStatus=null;
-
-		Response response = new Response();
-
-		try{
-			categories=categoryDao.getCategoriesOfStudent(id);
-			response.setIsSuccessful(true);
-			response.setMessage("Successful!");
-			response.setData(categories);
-			httpStatus=HttpStatus.OK;
-		}catch (Exception e){
-			e.printStackTrace();
-			response.setIsSuccessful(false);
-			response.setMessage("Server Error!");
-			response.setData(false);
-			httpStatus=HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-		return ResponseEntity.status(httpStatus).body(response);
-
-	}
-
-	@Override
-	public ResponseEntity<Response> getCategoriesOfTeacher(int id) {
-		List<Category> categories=null;
-		HttpStatus httpStatus=null;
-		Response response = new Response();
-		try{
-			categories=categoryDao.getCategoriesOfTeacher(id);
-			response.setIsSuccessful(true);
-			response.setMessage("Successful!");
-			response.setData(categories);
-			httpStatus=HttpStatus.OK;
-		}catch (Exception e){
-			e.printStackTrace();
-			response.setIsSuccessful(false);
-			response.setMessage("Server Error!");
-			response.setData(false);
-			httpStatus=HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-		return ResponseEntity.status(httpStatus).body(response);	}
+//	@Override
+//	public ResponseEntity<Response> getCategoriesOfStudent(int id) {
+//		List<Category> categories=null;
+//		HttpStatus httpStatus=null;
+//
+//		Response response = new Response();
+//
+//		try{
+//			categories=categoryDao.getCategoriesOfStudent(id);
+//			response.setIsSuccessful(true);
+//			response.setMessage("Successful!");
+//			response.setData(categories);
+//			httpStatus=HttpStatus.OK;
+//		}catch (Exception e){
+//			e.printStackTrace();
+//			response.setIsSuccessful(false);
+//			response.setMessage("Server Error!");
+//			response.setData(false);
+//			httpStatus=HttpStatus.INTERNAL_SERVER_ERROR;
+//		}
+//		return ResponseEntity.status(httpStatus).body(response);
+//
+//	}
+//
+//	@Override
+//	public ResponseEntity<Response> getCategoriesOfTeacher(int id) {
+//		List<Category> categories=null;
+//		HttpStatus httpStatus=null;
+//		Response response = new Response();
+//		try{
+//			categories=categoryDao.getCategoriesOfTeacher(id);
+//			response.setIsSuccessful(true);
+//			response.setMessage("Successful!");
+//			response.setData(categories);
+//			httpStatus=HttpStatus.OK;
+//		}catch (Exception e){
+//			e.printStackTrace();
+//			response.setIsSuccessful(false);
+//			response.setMessage("Server Error!");
+//			response.setData(false);
+//			httpStatus=HttpStatus.INTERNAL_SERVER_ERROR;
+//		}
+//		return ResponseEntity.status(httpStatus).body(response);	}
 
 
 }

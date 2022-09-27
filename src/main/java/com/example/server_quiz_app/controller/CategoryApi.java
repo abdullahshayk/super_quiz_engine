@@ -20,13 +20,4 @@ public class CategoryApi {
         return categoryService.getCategories();
     }
 
-    @GetMapping("category-student/{id}")
-    public ResponseEntity<Response> getCategoryOfStudent(@PathVariable int id) {
-        return categoryService.getCategoriesOfStudent(id);
-    }
-
-    @GetMapping("category-teacher/{id}")
-    public ResponseEntity<Response> getCategoryOfTeacher(@PathVariable int id) {
-        return categoryService.getCategoriesOfTeacher(id);
-    }
 }

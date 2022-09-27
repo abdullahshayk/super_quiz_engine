@@ -1,5 +1,6 @@
 package com.example.server_quiz_app.controller;
 
+import com.example.server_quiz_app.model.Category;
 import com.example.server_quiz_app.model.Response;
 import com.example.server_quiz_app.model.Student;
 import com.example.server_quiz_app.request_models.FollowTeacher;
@@ -8,6 +9,8 @@ import com.example.server_quiz_app.service.student_service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class StudentApi {
@@ -28,13 +31,25 @@ public class StudentApi {
     public ResponseEntity<Response>  signUpStudent(@RequestBody Student student)  {
         return studentService.signUpStudent(student);
     }
-    @PostMapping("save-student-categories")
-    public ResponseEntity<Response>  saveStudentCategories(@RequestBody UserCategory userCategory)  {
-        return studentService.addCategories(userCategory);
+    @PostMapping("save-student-categories/{id}")
+    public ResponseEntity<Response>  saveStudentCategories(
+            @PathVariable Integer id,
+            @RequestBody List<Category> categories) {
+        return studentService.addCategories(id,categories);
     }
     @PostMapping("follow-teacher")
     public ResponseEntity<Response>  followTeacher(@RequestBody FollowTeacher body)  {
         return studentService.followTeacher(body);
+    }
+
+    @GetMapping("student-following/{id}")
+    public ResponseEntity<Response> getFollowing(@PathVariable Integer id) {
+        return studentService.getFollowing(id);
+    }
+
+    @GetMapping("student-categories/{id}")
+    public ResponseEntity<Response> getCategoryOfStudent(@PathVariable int id) {
+        return studentService.getCategories(id);
     }
 
 }

@@ -1,15 +1,15 @@
 package com.example.server_quiz_app.controller;
 
+import com.example.server_quiz_app.model.Category;
 import com.example.server_quiz_app.model.Response;
 import com.example.server_quiz_app.model.Teacher;
 import com.example.server_quiz_app.request_models.UserCategory;
 import com.example.server_quiz_app.service.teacher_service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class TeacherApi {
@@ -23,12 +23,19 @@ public class TeacherApi {
     }
 
     @PostMapping("saveTeacher")
-    public ResponseEntity<Response> saveTeacher(@RequestBody Teacher teacher){
+    public ResponseEntity<Response> saveTeacher(@RequestBody Teacher teacher) {
         return teacherService.postTeacher(teacher);
     }
 
-    @PostMapping("save-teacher-categories")
-    public ResponseEntity<Response>  saveStudentCategories(@RequestBody UserCategory userCategory)  {
-        return teacherService.addCategories(userCategory);
+    @PostMapping("save-teacher-categories/{id}")
+    public ResponseEntity<Response> saveTeacherCategories(
+            @PathVariable Integer id,
+            @RequestBody List<Category> categories) {
+        return teacherService.addCategories(id,categories);
+    }
+
+    @GetMapping("teacher-category/{id}")
+    public ResponseEntity<Response> getCategoryOfTeacher(@PathVariable int id) {
+        return teacherService.getCategories(id);
     }
 }

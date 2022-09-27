@@ -127,19 +127,20 @@ public class StudentServiceImpl implements StudentService{
         return ResponseEntity.ok(response);
     }
     @Override
-    public ResponseEntity<Response> addCategories(UserCategory body) {
+    public ResponseEntity<Response> addCategories(Integer studentId, List<Category> categories) {
         Response response = new Response();
         try{
-            Student student=studentDao.findStudentByUsername(body.getUsername());
-            if(student==null){
+            Optional<Student> student=studentDao.findById(studentId);
+            if(!student.isPresent()){
                 response.setIsSuccessful(false);
-                response.setMessage("User with this username not found!");
+                response.setMessage("Student not found!");
                 response.setData(null);
                 httpStatus=HttpStatus.NOT_FOUND;
             }
             else{
-                student.setCategories(body.getCategoryList());
-                studentDao.save(student);
+                Student studentToUpdate=student.get();
+                studentToUpdate.setCategories(categories);
+                studentDao.save(studentToUpdate);
                 response.setIsSuccessful(true);
                 response.setMessage("Categories saved");
                 response.setData(true);
@@ -169,8 +170,8 @@ public class StudentServiceImpl implements StudentService{
             }
             else{
                 Optional<Teacher> teacher=teacherDao.findById(body.getTeacherId());
+                if(teacher.isPresent()){
                 Student studentToUpdate=student.get();
-
                 List<Teacher> teachersTemp=new ArrayList<>();
                 teachersTemp.add(teacher.get());
                 studentToUpdate.setFollowedTeachers(teachersTemp);
@@ -180,6 +181,13 @@ public class StudentServiceImpl implements StudentService{
                 response.setData(true);
                 studentToUpdate.getFollowedTeachers().get(0).getName();
                 httpStatus=HttpStatus.OK;
+                }
+                else{
+                    response.setIsSuccessful(false);
+                    response.setMessage("Teacher does not Exists!");
+                    response.setData(null);
+                    httpStatus=HttpStatus.NOT_FOUND;
+                }
             }
         }
         catch (Exception e){
@@ -192,12 +200,62 @@ public class StudentServiceImpl implements StudentService{
         return ResponseEntity.status(httpStatus).body(response);
     }
 
+    @Override
+    public ResponseEntity<Response> getFollowing(Integer studentId) {
+        Optional<Student> student=null;
+        Response response=new Response();
+        HttpStatus httpStatus=null;
+        try{
+            student= studentDao.findById(studentId);
+            if(student.isPresent()) {
+                response.setIsSuccessful(true);
+                response.setMessage("Successful!");
+                response.setData(student.get().getFollowedTeachers());
+                httpStatus = HttpStatus.OK;
+            }
+            else{
+                response.setIsSuccessful(false);
+                response.setMessage("Student does not Exists!");
+                response.setData(null);
+                httpStatus=HttpStatus.NOT_FOUND;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            response.setIsSuccessful(false);
+            response.setMessage("Server Error!");
+            response.setData(false);
+            httpStatus=HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return ResponseEntity.status(httpStatus).body(response);
+    }
 
-
-
-
-
-
-
+    @Override
+    public ResponseEntity<Response> getCategories(Integer studentId) {
+        Optional<Student> student=null;
+        Response response=new Response();
+        HttpStatus httpStatus=null;
+        try{
+            student= studentDao.findById(studentId);
+            if(student.isPresent()) {
+                response.setIsSuccessful(true);
+                response.setMessage("Successful!");
+                response.setData(student.get().getCategories());
+                httpStatus = HttpStatus.OK;
+            }
+            else{
+                response.setIsSuccessful(false);
+                response.setMessage("Student does not Exists!");
+                response.setData(null);
+                httpStatus=HttpStatus.NOT_FOUND;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            response.setIsSuccessful(false);
+            response.setMessage("Server Error!");
+            response.setData(false);
+            httpStatus=HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return ResponseEntity.status(httpStatus).body(response);
+    }
 
 }
