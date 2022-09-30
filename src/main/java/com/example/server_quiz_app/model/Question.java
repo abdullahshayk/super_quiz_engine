@@ -41,7 +41,7 @@ public class Question {
             inverseJoinColumns = @JoinColumn(name = "category_category_id"))
     private List<Category> categories = new ArrayList<>();
 
-    @OneToMany(mappedBy ="question" )
+    @OneToMany(cascade = CascadeType.ALL,mappedBy ="question" )
     @JsonManagedReference
     private List<Option> options = new ArrayList<>();
 

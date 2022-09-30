@@ -19,7 +19,7 @@ public class StudentApi {
     private StudentService studentService;
 
     @GetMapping("students")
-    public ResponseEntity<Response> getTeachers() {
+    public ResponseEntity<Response> getStudents() {
         return studentService.getStudents();
     }
 

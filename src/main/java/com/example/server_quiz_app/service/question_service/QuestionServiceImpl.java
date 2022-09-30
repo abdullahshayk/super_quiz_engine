@@ -104,7 +104,18 @@ public class QuestionServiceImpl implements QuestionService{
 		else {
 			try {
 				List<Question> question = null;
-				question = questionDao.findQuestionsByCategory(categoryId,questionType, PageRequest.of(offset,pageSize));
+				if(request.getCategorys().isEmpty() && request.getTypes().isEmpty()){
+					question=questionDao.findQuestions(PageRequest.of(offset,pageSize));
+				}
+				else if(request.getCategorys().isEmpty()){
+					question = questionDao.findQuestionsByQuestionType(questionType, PageRequest.of(offset, pageSize));
+				}
+				else if(request.getTypes().isEmpty()){
+					question = questionDao.findQuestionsByCategory(categoryId, PageRequest.of(offset, pageSize));
+				}
+				else {
+					question = questionDao.findQuestionsByCategoryAndType(categoryId, questionType, PageRequest.of(offset, pageSize));
+				}
 				response.setIsSuccessful(true);
 				response.setMessage("Successful!");
 

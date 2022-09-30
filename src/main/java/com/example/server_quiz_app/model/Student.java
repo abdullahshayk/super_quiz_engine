@@ -59,6 +59,13 @@ public class Student {
     @JsonIgnore
     private List<Teacher> followedTeachers = new ArrayList<>();
 
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(name = "student_like_post",
+            joinColumns = @JoinColumn(name = "student_student_id"),
+            inverseJoinColumns = @JoinColumn(name = "post_post_id"))
+    @JsonIgnore
+    private List<Post> likedPosts = new ArrayList<>();
+
 
 
 

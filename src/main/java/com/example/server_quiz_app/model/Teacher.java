@@ -36,4 +36,9 @@ public class Teacher {
     @JsonIgnore
     private List<Student> studentsFollowed = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "teacher")
+    @JsonIgnore
+    private List<Post> posts = new ArrayList<>();
+
+
 }
