@@ -1,11 +1,9 @@
 package com.example.server_quiz_app.service.student_service;
 
-import com.example.server_quiz_app.dao.CategoryDao;
 import com.example.server_quiz_app.dao.StudentDao;
 import com.example.server_quiz_app.dao.TeacherDao;
 import com.example.server_quiz_app.model.*;
 import com.example.server_quiz_app.request_models.FollowTeacher;
-import com.example.server_quiz_app.request_models.UserCategory;
 import com.example.server_quiz_app.security.JwtUtil;
 import com.example.server_quiz_app.service.MyUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,16 +17,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class StudentServiceImpl implements StudentService{
     @Autowired
     private StudentDao studentDao;
-
     @Autowired
     private TeacherDao teacherDao;
 
@@ -36,13 +30,12 @@ public class StudentServiceImpl implements StudentService{
     private AuthenticationManager authenticationManager;
     @Autowired
     private JwtUtil jwtTokenUtil;
-    @Autowired
-    private MyUserDetailService userDetailsService;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
-    private HttpStatus httpStatus;
     @Autowired
-    private CategoryDao categoryDao;
+    private MyUserDetailService userDetailsService;
+    private HttpStatus httpStatus;
 
     @Override
     public ResponseEntity<Response> getStudents() {
@@ -69,37 +62,37 @@ public class StudentServiceImpl implements StudentService{
     @Override
     public ResponseEntity<Response> signUpStudent(Student student) {
         Response response = new Response();
-      try{
-         // student.setPassword(passwordEncoder.encode(student.getPassword()));
-          if(studentDao.findStudentByUsername(student.getUsername())!=null){
-              response.setIsSuccessful(false);
-              response.setMessage("User with username already exist");
-              response.setData(false);
-              httpStatus = HttpStatus.CONFLICT;
-          }else {
-              studentDao.save(student);
-              response.setIsSuccessful(true);
-              response.setMessage("Successful!");
-              response.setData(true);
-              httpStatus = HttpStatus.OK;
-          }
-      }
-      catch (DataIntegrityViolationException e){
-          e.printStackTrace();
-          response.setIsSuccessful(false);
-          response.setMessage("username, email and password cannot be empty");
-          response.setData(false);
-          httpStatus=HttpStatus.INTERNAL_SERVER_ERROR;
-      }
-      catch (Exception e){
-          e.printStackTrace();
-          response.setIsSuccessful(false);
-          response.setMessage("Server Error!");
-          response.setData(false);
-          httpStatus=HttpStatus.INTERNAL_SERVER_ERROR;
-      }
+        try{
+            if(studentDao.findStudentByUsername(student.getUsername())!=null){
+                response.setIsSuccessful(false);
+                response.setMessage("User with username already exist");
+                response.setData(false);
+                httpStatus = HttpStatus.CONFLICT;
+            }else {
+                student.setPassword(passwordEncoder.encode(student.getPassword()));
+                studentDao.save(student);
+                response.setIsSuccessful(true);
+                response.setMessage("Successful!");
+                response.setData(true);
+                httpStatus = HttpStatus.OK;
+            }
+        }
+        catch (DataIntegrityViolationException e){
+            e.printStackTrace();
+            response.setIsSuccessful(false);
+            response.setMessage("username, email and password cannot be empty");
+            response.setData(false);
+            httpStatus=HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            response.setIsSuccessful(false);
+            response.setMessage("Server Error!");
+            response.setData(false);
+            httpStatus=HttpStatus.INTERNAL_SERVER_ERROR;
+        }
         return ResponseEntity.status(httpStatus).body(response);
-      }
+    }
     @Override
     public ResponseEntity<Response> authenticateStudent(Student student) {
         Response response = new Response();
@@ -117,14 +110,32 @@ public class StudentServiceImpl implements StudentService{
             response.setData(false);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
+           final UserDetails userDetails = userDetailsService.loadUserByUsername(student.getUsername());
+            final String jwt = jwtTokenUtil.generateToken(userDetails);
+            response.setIsSuccessful(true);
+            response.setData(new HashMap<String, String>() {{
+                put("token", jwt);
+                put("expirationDate", jwtTokenUtil.getExpirationDateFromToken(jwt).toString());
+            }});
+            return ResponseEntity.ok(response);
 
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(student.getUsername());
-        final String jwt = jwtTokenUtil.generateToken(userDetails);
-
-        response.setMessage("Login Successful");
-        response.setIsSuccessful(true);
-        response.setData(jwt);
-        return ResponseEntity.ok(response);
+//        try {
+//            final UserDetails userDetails = userDetailsService.loadUserByUsername(student.getUsername());
+//            if(!Objects.equals(EncryptionAndDecryption.decrypt(userDetails.getPassword()), student.getPassword())) {
+//                throw new UsernameNotFoundException("Invalid Password");
+//            }
+//            final String jwt = jwtTokenUtil.generateToken(userDetails);
+//            response.setMessage("Login Successful");
+//            response.setIsSuccessful(true);
+//            response.setData(jwt);
+//            return ResponseEntity.ok(response);
+//        }
+//        catch (UsernameNotFoundException e) {
+//            response.setMessage(e.getMessage());
+//            response.setIsSuccessful(false);
+//            response.setData(false);
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+//        }
     }
     @Override
     public ResponseEntity<Response> addCategories(Integer studentId, List<Category> categories) {
@@ -171,16 +182,17 @@ public class StudentServiceImpl implements StudentService{
             else{
                 Optional<Teacher> teacher=teacherDao.findById(body.getTeacherId());
                 if(teacher.isPresent()){
-                Student studentToUpdate=student.get();
-                List<Teacher> teachersTemp=new ArrayList<>();
-                teachersTemp.add(teacher.get());
-                studentToUpdate.setFollowedTeachers(teachersTemp);
-                studentDao.save(studentToUpdate);
-                response.setIsSuccessful(true);
-                response.setMessage("Teacher Followed");
-                response.setData(true);
-                studentToUpdate.getFollowedTeachers().get(0).getName();
-                httpStatus=HttpStatus.OK;
+                    Student studentToUpdate=student.get();
+                    List<Teacher> teachersTemp=studentToUpdate.getFollowedTeachers();
+                        teachersTemp.add(teacher.get());
+                        studentToUpdate.setFollowedTeachers(teachersTemp);
+                        studentDao.save(studentToUpdate);
+                        response.setIsSuccessful(true);
+                        response.setMessage("Teacher Followed");
+                        response.setData(true);
+                        studentToUpdate.getFollowedTeachers().get(0).getName();
+                        httpStatus = HttpStatus.OK;
+
                 }
                 else{
                     response.setIsSuccessful(false);
@@ -189,6 +201,12 @@ public class StudentServiceImpl implements StudentService{
                     httpStatus=HttpStatus.NOT_FOUND;
                 }
             }
+        }
+        catch (DataIntegrityViolationException e){
+            response.setIsSuccessful(false);
+            response.setMessage("Teacher Already Followed");
+            response.setData(null);
+            httpStatus = HttpStatus.CONFLICT;
         }
         catch (Exception e){
             e.printStackTrace();

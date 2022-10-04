@@ -13,5 +13,7 @@ public interface QuestionService {
     ResponseEntity<Response> getQuestionOfSpecificTeacher(Integer teacherId);
     ResponseEntity<Response> getQuestionsByCategoryAndType(GetQuestionByCategoryAndType request, Integer offset, Integer pageSize);
 
+    ResponseEntity<Response> deleteQuestionById(Integer questionId);
+
 
     }

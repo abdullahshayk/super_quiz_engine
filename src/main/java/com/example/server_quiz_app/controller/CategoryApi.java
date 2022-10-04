@@ -1,5 +1,6 @@
 package com.example.server_quiz_app.controller;
 
+import com.example.server_quiz_app.filters.JwtFilter;
 import com.example.server_quiz_app.model.Response;
 import com.example.server_quiz_app.service.category_service.CategoryService;
 import com.example.server_quiz_app.service.category_service.CategoryServiceImpl;
@@ -13,12 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class CategoryApi {
+
     @Autowired
     private CategoryService categoryService;
 
     @GetMapping("categories")
     public ResponseEntity<Response> getCategories() {
-
         return categoryService.getCategories();
     }
 

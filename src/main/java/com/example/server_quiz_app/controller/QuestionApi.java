@@ -18,25 +18,30 @@ public class QuestionApi {
     public ResponseEntity<Response> getQuestions() {
         return questionService.getQuestions();
     }
+
     @GetMapping("questions-by-teacher")
     public ResponseEntity<Response> getQuestionsByTeacher(@RequestParam Integer teacherId) {
         return questionService.getQuestionOfSpecificTeacher(teacherId);
     }
+
     @GetMapping("questions-by-category")
     public ResponseEntity<Response> getQuestionsByCategoryAndType(
             @RequestParam Integer offset,
             @RequestParam Integer pageSize,
             @RequestBody GetQuestionByCategoryAndType request
-            ) {
-        return questionService.getQuestionsByCategoryAndType(request,offset,pageSize);
+    ) {
+        return questionService.getQuestionsByCategoryAndType(request, offset, pageSize);
     }
 
     @PostMapping("saveQuestion")
-    public ResponseEntity<Response> saveQuestion(@RequestBody Question question){
+    public ResponseEntity<Response> saveQuestion(@RequestBody Question question) {
         return questionService.postQuestion(question);
     }
 
-
-
+    @DeleteMapping("delete-question/{id}")
+    public ResponseEntity<Response> deleteQuestion(@PathVariable Integer id) {
+        return questionService.deleteQuestionById(id);
+    }
+    
 
 }

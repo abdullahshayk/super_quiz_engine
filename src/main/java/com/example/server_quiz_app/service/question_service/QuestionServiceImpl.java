@@ -2,6 +2,7 @@ package com.example.server_quiz_app.service.question_service;
 
 import java.util.List;
 
+import com.example.server_quiz_app.exception_handling.ResourceNotFoundException;
 import com.example.server_quiz_app.request_models.GetQuestionByCategoryAndType;
 import com.example.server_quiz_app.model.Question;
 import com.example.server_quiz_app.model.Response;
@@ -30,6 +31,7 @@ public class QuestionServiceImpl implements QuestionService{
 				response.setMessage("Successful! response="+question.size());
 				response.setData(question);
 	            httpStatus=HttpStatus.OK;
+
 	        }catch (Exception e){
 	            e.printStackTrace();
 				response.setIsSuccessful(false);
@@ -57,28 +59,44 @@ public class QuestionServiceImpl implements QuestionService{
 		}
 		return ResponseEntity.status(httpStatus).body(response);
 	}
+//	@Override
+//	public ResponseEntity<Response> getQuestionOfSpecificTeacher(Integer teacherId) {
+//		try{
+//			List<Question> question = null;
+//			if(questionDao.doesTeacherExist(teacherId)!=null) {
+//				question = questionDao.findQuestionsByTeacherId(teacherId);
+//				response.setMessage("Successful!");
+//			}
+//			else {
+//				response.setMessage("Teacher does not exist");
+//			}
+//			response.setIsSuccessful(true);
+//			response.setData(question);
+//			httpStatus = HttpStatus.OK;
+//		}catch (Exception e){
+//			e.printStackTrace();
+//			response.setIsSuccessful(false);
+//			response.setMessage("Server Error!");
+//			response.setData(false);
+//			httpStatus=HttpStatus.INTERNAL_SERVER_ERROR;
+//		}
+//		return ResponseEntity.status(httpStatus).body(response);
+//	}
+
 	@Override
 	public ResponseEntity<Response> getQuestionOfSpecificTeacher(Integer teacherId) {
-		try{
-			List<Question> question = null;
-			if(questionDao.doesTeacherExist(teacherId)!=null) {
-				question = questionDao.findQuestionsByTeacherId(teacherId);
-				response.setMessage("Successful!");
-			}
-			else {
-				response.setMessage("Teacher does not exist");
-			}
+		List<Question> question = null;
+		if(questionDao.doesTeacherExist(teacherId)==null) {
+			throw new ResourceNotFoundException("Teacher not found");
+		}
+		else {
+			question = questionDao.findQuestionsByTeacherId(teacherId);
+			response.setMessage("Successful!");
 			response.setIsSuccessful(true);
 			response.setData(question);
 			httpStatus = HttpStatus.OK;
-		}catch (Exception e){
-			e.printStackTrace();
-			response.setIsSuccessful(false);
-			response.setMessage("Server Error!");
-			response.setData(false);
-			httpStatus=HttpStatus.INTERNAL_SERVER_ERROR;
+			return ResponseEntity.status(httpStatus).body(response);
 		}
-		return ResponseEntity.status(httpStatus).body(response);
 	}
 //	question_type:
 //			1->Mcques-single
@@ -131,6 +149,26 @@ public class QuestionServiceImpl implements QuestionService{
 		}
 		return ResponseEntity.status(httpStatus).body(response);
 	}
+
+	@Override
+	public ResponseEntity<Response> deleteQuestionById(Integer questionId) {
+		try {
+			questionDao.deleteById(questionId);
+			response.setIsSuccessful(true);
+			response.setMessage("Successful!");
+			response.setData(true);
+			httpStatus=HttpStatus.OK;
+		}catch (Exception e){
+			e.printStackTrace();
+			response.setIsSuccessful(false);
+			response.setMessage("Server Error!");
+			response.setData(false);
+			httpStatus=HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return ResponseEntity.status(httpStatus).body(response);
+	}
+
 
 	private static boolean inRange(List<Integer> list, int min, int max) {
 		return list.stream().allMatch(i -> i >= min && i <= max);
