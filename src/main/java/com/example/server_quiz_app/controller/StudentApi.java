@@ -4,6 +4,7 @@ import com.example.server_quiz_app.model.Category;
 import com.example.server_quiz_app.model.Response;
 import com.example.server_quiz_app.model.Student;
 import com.example.server_quiz_app.request_models.FollowTeacher;
+import com.example.server_quiz_app.request_models.LikeQuestion;
 import com.example.server_quiz_app.request_models.UserCategory;
 import com.example.server_quiz_app.service.student_service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,11 @@ public class StudentApi {
     @PostMapping("follow-teacher")
     public ResponseEntity<Response>  followTeacher(@RequestBody FollowTeacher body)  {
         return studentService.followTeacher(body);
+    }
+
+    @PostMapping("like-question")
+    public ResponseEntity<Response>  likeQuestion(@RequestBody LikeQuestion body)  {
+        return studentService.likeQuestion(body);
     }
 
     @GetMapping("student-following/{id}")

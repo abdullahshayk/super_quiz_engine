@@ -1,9 +1,11 @@
 package com.example.server_quiz_app.service.student_service;
 
+import com.example.server_quiz_app.dao.QuestionDao;
 import com.example.server_quiz_app.dao.StudentDao;
 import com.example.server_quiz_app.dao.TeacherDao;
 import com.example.server_quiz_app.model.*;
 import com.example.server_quiz_app.request_models.FollowTeacher;
+import com.example.server_quiz_app.request_models.LikeQuestion;
 import com.example.server_quiz_app.security.JwtUtil;
 import com.example.server_quiz_app.service.MyUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,8 @@ public class StudentServiceImpl implements StudentService{
     private StudentDao studentDao;
     @Autowired
     private TeacherDao teacherDao;
+    @Autowired
+    private QuestionDao questionDao;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -275,5 +279,53 @@ public class StudentServiceImpl implements StudentService{
         }
         return ResponseEntity.status(httpStatus).body(response);
     }
+
+    @Override
+    public ResponseEntity<Response> likeQuestion(LikeQuestion body) {
+        Response response = new Response();
+        try{
+            Optional<Student> student=studentDao.findById(body.getStudentId());
+            if(!student.isPresent()){
+                response.setIsSuccessful(false);
+                response.setMessage("Student does not Exists!");
+                response.setData(null);
+                httpStatus=HttpStatus.NOT_FOUND;
+            }
+            else{
+                Optional<Question> question=questionDao.findById(body.getQuestionId());
+                if(question.isPresent()){
+                    Student studentToUpdate=student.get();
+                    List<Question> questionsTemp=studentToUpdate.getLikedQuestion();
+                    questionsTemp.add(question.get());
+                    studentToUpdate.setLikedQuestion(questionsTemp);
+                    studentDao.save(studentToUpdate);
+                    response.setIsSuccessful(true);
+                    response.setMessage("Question Liked");
+                    response.setData(true);
+                    httpStatus = HttpStatus.OK;
+
+                }
+                else{
+                    response.setIsSuccessful(false);
+                    response.setMessage("Question does not Exists!");
+                    response.setData(null);
+                    httpStatus=HttpStatus.NOT_FOUND;
+                }
+            }
+        }
+        catch (DataIntegrityViolationException e){
+            response.setIsSuccessful(false);
+            response.setMessage("Question Already Liked");
+            response.setData(null);
+            httpStatus = HttpStatus.CONFLICT;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            response.setIsSuccessful(false);
+            response.setMessage("Server Error!");
+            response.setData(false);
+            httpStatus=HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return ResponseEntity.status(httpStatus).body(response);    }
 
 }

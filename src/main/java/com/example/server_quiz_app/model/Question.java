@@ -45,7 +45,7 @@ public class Question {
     @JsonManagedReference
     private List<Option> options = new ArrayList<>();
 
-    @ManyToMany(mappedBy ="likedQuestion" )
+    @ManyToMany(mappedBy ="likedQuestion")
     private List<Student> likedStudent = new ArrayList<>();
 
     @ManyToMany(mappedBy ="attemptedQuestion" )

@@ -4,6 +4,7 @@ import com.example.server_quiz_app.model.Category;
 import com.example.server_quiz_app.model.Response;
 import com.example.server_quiz_app.model.Student;
 import com.example.server_quiz_app.request_models.FollowTeacher;
+import com.example.server_quiz_app.request_models.LikeQuestion;
 import com.example.server_quiz_app.request_models.UserCategory;
 import org.springframework.http.ResponseEntity;
 
@@ -17,6 +18,7 @@ public interface StudentService {
     ResponseEntity<Response> followTeacher(FollowTeacher body);
     ResponseEntity<Response> getFollowing(Integer studentId);
     ResponseEntity<Response> getCategories(Integer studentId);
+    ResponseEntity<Response> likeQuestion(LikeQuestion body);
 
 
     }

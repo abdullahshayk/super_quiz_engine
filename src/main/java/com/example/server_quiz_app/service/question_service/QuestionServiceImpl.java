@@ -2,11 +2,14 @@ package com.example.server_quiz_app.service.question_service;
 
 import java.util.List;
 
+import com.example.server_quiz_app.dao.StudentLikesQuestionDao;
 import com.example.server_quiz_app.exception_handling.ResourceNotFoundException;
+import com.example.server_quiz_app.model.StudentLikeQuestion;
 import com.example.server_quiz_app.request_models.GetQuestionByCategoryAndType;
 import com.example.server_quiz_app.model.Question;
 import com.example.server_quiz_app.model.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +22,10 @@ public class QuestionServiceImpl implements QuestionService{
 
 	@Autowired
 	private QuestionDao questionDao;
+
+	@Autowired
+	private StudentLikesQuestionDao studentLikesQuestionDao;
+
 
 	private Response response=new Response();
 	private HttpStatus httpStatus;
@@ -153,12 +160,23 @@ public class QuestionServiceImpl implements QuestionService{
 	@Override
 	public ResponseEntity<Response> deleteQuestionById(Integer questionId) {
 		try {
+			List< StudentLikeQuestion> list=studentLikesQuestionDao.findByQuestionQuestionId(questionId);
+			studentLikesQuestionDao.deleteAll(list);
 			questionDao.deleteById(questionId);
+			list.forEach(studentLikeQuestion -> System.out.println(studentLikeQuestion.getStudentStudent().getId()));
+			System.out.println(list);
 			response.setIsSuccessful(true);
 			response.setMessage("Successful!");
 			response.setData(true);
 			httpStatus=HttpStatus.OK;
-		}catch (Exception e){
+		}
+		catch (EmptyResultDataAccessException e){
+			response.setIsSuccessful(false);
+			response.setMessage("Question does not exists");
+			response.setData(false);
+			httpStatus=HttpStatus.NOT_FOUND;
+		}
+		catch (Exception e){
 			e.printStackTrace();
 			response.setIsSuccessful(false);
 			response.setMessage("Server Error!");
