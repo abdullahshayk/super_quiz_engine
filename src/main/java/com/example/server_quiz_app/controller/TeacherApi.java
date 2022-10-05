@@ -1,6 +1,7 @@
 package com.example.server_quiz_app.controller;
 
 import com.example.server_quiz_app.model.Category;
+import com.example.server_quiz_app.model.Post;
 import com.example.server_quiz_app.model.Response;
 import com.example.server_quiz_app.model.Teacher;
 import com.example.server_quiz_app.request_models.UserCategory;
@@ -37,5 +38,13 @@ public class TeacherApi {
     @GetMapping("teacher-category/{id}")
     public ResponseEntity<Response> getCategoryOfTeacher(@PathVariable int id) {
         return teacherService.getCategories(id);
+    }
+
+    @PostMapping("add-post/{id}")
+    public ResponseEntity<Response> addPost(
+            @PathVariable int id,
+            @RequestBody Post post
+            ) {
+        return teacherService.addPost(id,post);
     }
 }

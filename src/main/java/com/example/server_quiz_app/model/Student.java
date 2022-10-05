@@ -67,6 +67,9 @@ public class Student {
     @JsonIgnore
     private List<Post> likedPosts = new ArrayList<>();
 
+    @OneToMany(mappedBy = "student")
+    private List<Comment> comments=new ArrayList<>();
+
 
 
 

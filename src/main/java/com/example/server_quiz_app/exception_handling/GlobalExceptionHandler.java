@@ -15,5 +15,13 @@ public class GlobalExceptionHandler  {
                 .body(new Response(false,resourceNotFoundException.getMessage(),null));
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Response> exception(Exception e){
+        e.printStackTrace();
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new Response(false,"Server error",null));
+    }
+
 
 }

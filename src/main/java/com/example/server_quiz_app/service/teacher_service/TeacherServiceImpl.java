@@ -3,11 +3,10 @@ package com.example.server_quiz_app.service.teacher_service;
 import java.util.List;
 import java.util.Optional;
 
-import com.example.server_quiz_app.model.Category;
-import com.example.server_quiz_app.model.Response;
-import com.example.server_quiz_app.model.Student;
+import com.example.server_quiz_app.dao.PostDao;
+import com.example.server_quiz_app.exception_handling.ResourceNotFoundException;
+import com.example.server_quiz_app.model.*;
 import com.example.server_quiz_app.request_models.UserCategory;
-import com.example.server_quiz_app.model.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +18,9 @@ import com.example.server_quiz_app.dao.TeacherDao;
 public class TeacherServiceImpl implements TeacherService{
 	@Autowired
 	private TeacherDao teacherDao;
+
+	@Autowired
+	private PostDao postDao;
 	private HttpStatus httpStatus;
 
 
@@ -152,5 +154,21 @@ public class TeacherServiceImpl implements TeacherService{
 			httpStatus=HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return ResponseEntity.status(httpStatus).body(response); 	}
+
+	@Override
+	public ResponseEntity<Response> addPost(Integer teacherId,Post post) {
+		Response response=new Response();
+		Optional<Teacher> teacher=teacherDao.findById(teacherId);
+		if(!teacher.isPresent()){
+			throw  new ResourceNotFoundException("Teacher not found");
+		}
+		post.setTeacher(teacher.get());
+		postDao.save(post);
+		response.setIsSuccessful(true);
+		response.setMessage("Post Published");
+		httpStatus = HttpStatus.CREATED;
+		return ResponseEntity.status(httpStatus).body(response);
+
+	}
 
 }

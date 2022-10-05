@@ -1,8 +1,10 @@
 package com.example.server_quiz_app.controller;
 
 import com.example.server_quiz_app.model.Category;
+import com.example.server_quiz_app.model.Post;
 import com.example.server_quiz_app.model.Response;
 import com.example.server_quiz_app.model.Student;
+import com.example.server_quiz_app.request_models.AddComment;
 import com.example.server_quiz_app.request_models.FollowTeacher;
 import com.example.server_quiz_app.request_models.LikeQuestion;
 import com.example.server_quiz_app.request_models.UserCategory;
@@ -56,6 +58,14 @@ public class StudentApi {
     @GetMapping("student-categories/{id}")
     public ResponseEntity<Response> getCategoryOfStudent(@PathVariable int id) {
         return studentService.getCategories(id);
+    }
+
+    @PostMapping("add-comment/{studentId}")
+    public ResponseEntity<Response> addComment(
+            @PathVariable int studentId,
+            @RequestBody AddComment body
+            ) {
+        return studentService.addComment(studentId,body);
     }
 
 }

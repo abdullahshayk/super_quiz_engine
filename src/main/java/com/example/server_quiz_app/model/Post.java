@@ -21,15 +21,15 @@ public class Post {
     @Column(name = "post_id", nullable = false)
     private Integer id;
 
-    @Column(name = "`post_title`", nullable = true)
-    private String postTitle;
+    @Column(name = "`post_content`", nullable = true)
+    private String postContent;
 
-    @Column(name = "`post_description`", nullable = true)
-    private String postDescription;
-
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "teacher_id", nullable = false)
     private Teacher teacher;
+
+    @OneToMany(mappedBy = "post")
+    private List<Comment> comments=new ArrayList<>();
 
     @ManyToMany(mappedBy = "likedPosts")
     @JsonIgnore
