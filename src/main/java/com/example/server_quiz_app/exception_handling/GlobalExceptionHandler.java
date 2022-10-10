@@ -8,6 +8,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionHandler  {
+
+    @ExceptionHandler(AlreadyExistsException.class)
+    public ResponseEntity<Response> alreadyExistsException(AlreadyExistsException alreadyExistsException){
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(new Response(false,alreadyExistsException.getMessage(),null));
+    }
+
+
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Response> resourceNotFoundException(ResourceNotFoundException resourceNotFoundException){
         return ResponseEntity

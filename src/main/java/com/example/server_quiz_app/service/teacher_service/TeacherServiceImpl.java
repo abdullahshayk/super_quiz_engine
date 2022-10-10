@@ -4,12 +4,15 @@ import java.util.List;
 import java.util.Optional;
 
 import com.example.server_quiz_app.dao.PostDao;
+import com.example.server_quiz_app.dao.StudentLikePostDao;
 import com.example.server_quiz_app.exception_handling.ResourceNotFoundException;
 import com.example.server_quiz_app.model.*;
 import com.example.server_quiz_app.request_models.UserCategory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import com.example.server_quiz_app.dao.TeacherDao;
@@ -21,6 +24,8 @@ public class TeacherServiceImpl implements TeacherService{
 
 	@Autowired
 	private PostDao postDao;
+	@Autowired
+	private StudentLikePostDao studentLikePostDao;
 	private HttpStatus httpStatus;
 
 
@@ -169,6 +174,27 @@ public class TeacherServiceImpl implements TeacherService{
 		httpStatus = HttpStatus.CREATED;
 		return ResponseEntity.status(httpStatus).body(response);
 
+	}
+
+	@Override
+	public ResponseEntity<Response> deletePost(Integer postId) {
+		Response response=new Response();
+		try {
+			List< StudentLikePost> list=studentLikePostDao.findByPostPostId(postId);
+			studentLikePostDao.deleteAll(list);
+			postDao.deleteById(postId);
+			response.setIsSuccessful(true);
+			response.setMessage("Successful!");
+			response.setData(true);
+		}
+		catch (EmptyResultDataAccessException e){
+			response.setIsSuccessful(false);
+			response.setMessage("Post does not exists");
+			response.setData(false);
+			httpStatus=HttpStatus.NOT_FOUND;
+
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
 }

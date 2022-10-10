@@ -21,6 +21,7 @@ public interface TeacherService {
     ResponseEntity<Response> getCategories(Integer teacherId);
 
     ResponseEntity<Response> addPost(Integer teacherId,Post post);
+    ResponseEntity<Response> deletePost(Integer postId);
 
 
 

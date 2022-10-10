@@ -25,6 +25,7 @@ public interface StudentService {
     ResponseEntity<Response> addComment(Integer studentId,AddComment body);
     ResponseEntity<Response> getPostByFollowing(Integer studentId);
     ResponseEntity<Response> getCommentsByPost(Integer postId);
+    ResponseEntity<Response> likePost(Integer studentId,Integer postId);
 
 
 

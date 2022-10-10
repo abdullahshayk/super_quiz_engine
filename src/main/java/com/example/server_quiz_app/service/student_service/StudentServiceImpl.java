@@ -1,6 +1,7 @@
 package com.example.server_quiz_app.service.student_service;
 
 import com.example.server_quiz_app.dao.*;
+import com.example.server_quiz_app.exception_handling.AlreadyExistsException;
 import com.example.server_quiz_app.exception_handling.ResourceNotFoundException;
 import com.example.server_quiz_app.model.*;
 import com.example.server_quiz_app.request_models.AddComment;
@@ -129,23 +130,6 @@ public class StudentServiceImpl implements StudentService {
         }});
         return ResponseEntity.ok(response);
 
-//        try {
-//            final UserDetails userDetails = userDetailsService.loadUserByUsername(student.getUsername());
-//            if(!Objects.equals(EncryptionAndDecryption.decrypt(userDetails.getPassword()), student.getPassword())) {
-//                throw new UsernameNotFoundException("Invalid Password");
-//            }
-//            final String jwt = jwtTokenUtil.generateToken(userDetails);
-//            response.setMessage("Login Successful");
-//            response.setIsSuccessful(true);
-//            response.setData(jwt);
-//            return ResponseEntity.ok(response);
-//        }
-//        catch (UsernameNotFoundException e) {
-//            response.setMessage(e.getMessage());
-//            response.setIsSuccessful(false);
-//            response.setData(false);
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-//        }
     }
 
     @Override
@@ -279,50 +263,6 @@ public class StudentServiceImpl implements StudentService {
         return ResponseEntity.status(httpStatus).body(response);
     }
 
-    @Override
-    public ResponseEntity<Response> likeQuestion(LikeQuestion body) {
-        Response response = new Response();
-        try {
-            Optional<Student> student = studentDao.findById(body.getStudentId());
-            if (!student.isPresent()) {
-                response.setIsSuccessful(false);
-                response.setMessage("Student does not Exists!");
-                response.setData(null);
-                httpStatus = HttpStatus.NOT_FOUND;
-            } else {
-                Optional<Question> question = questionDao.findById(body.getQuestionId());
-                if (question.isPresent()) {
-                    Student studentToUpdate = student.get();
-                    List<Question> questionsTemp = studentToUpdate.getLikedQuestion();
-                    questionsTemp.add(question.get());
-                    studentToUpdate.setLikedQuestion(questionsTemp);
-                    studentDao.save(studentToUpdate);
-                    response.setIsSuccessful(true);
-                    response.setMessage("Question Liked");
-                    response.setData(true);
-                    httpStatus = HttpStatus.OK;
-
-                } else {
-                    response.setIsSuccessful(false);
-                    response.setMessage("Question does not Exists!");
-                    response.setData(null);
-                    httpStatus = HttpStatus.NOT_FOUND;
-                }
-            }
-        } catch (DataIntegrityViolationException e) {
-            response.setIsSuccessful(false);
-            response.setMessage("Question Already Liked");
-            response.setData(null);
-            httpStatus = HttpStatus.CONFLICT;
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.setIsSuccessful(false);
-            response.setMessage("Server Error!");
-            response.setData(false);
-            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-        return ResponseEntity.status(httpStatus).body(response);
-    }
 
     @Override
     public ResponseEntity<Response> addComment(Integer studentId, AddComment body) {
@@ -377,6 +317,60 @@ public class StudentServiceImpl implements StudentService {
             response.setIsSuccessful(true);
             response.setData(comments);
             response.setMessage("Successful");
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }
+    }
+
+    @Override
+    public ResponseEntity<Response> likeQuestion(LikeQuestion body) {
+        Response response = new Response();
+            Optional<Student> student = studentDao.findById(body.getStudentId());
+            Optional<Question> question = questionDao.findById(body.getQuestionId());
+            if(!student.isPresent()){
+                throw new ResourceNotFoundException("Student Not found");
+            } else if(!question.isPresent()){
+                throw new ResourceNotFoundException("Question Not found");
+            }
+            else {
+                Student studentToUpdate = student.get();
+                List<Question> questionsTemp = studentToUpdate.getLikedQuestion();
+                if(questionsTemp.contains(question.get())){
+                    throw new AlreadyExistsException("Question already liked");
+                }
+                questionsTemp.add(question.get());
+                studentToUpdate.setLikedQuestion(questionsTemp);
+                studentDao.save(studentToUpdate);
+                response.setIsSuccessful(true);
+                response.setMessage("Question Liked");
+                response.setData(true);
+                httpStatus = HttpStatus.OK;
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            }
+
+    }
+
+    @Override
+    public ResponseEntity<Response> likePost(Integer studentId, Integer postId) {
+        Response response = new Response();
+        Optional<Student> student=studentDao.findById(studentId);
+        Optional<Post> post = postDao.findById(postId);
+        if(!student.isPresent()){
+            throw new ResourceNotFoundException("Student Not found");
+        } else if (!post.isPresent()) {
+            throw new ResourceNotFoundException("Post Not found");
+        }
+        else{
+            Student studentToUpdate=student.get();
+            List<Post> likedPosts = student.get().getLikedPosts();
+            if(likedPosts.contains(post.get())){
+                throw new AlreadyExistsException("Post already liked");
+            }
+            likedPosts.add(post.get());
+            studentToUpdate.setLikedPosts(likedPosts);
+            studentDao.save(studentToUpdate);
+            response.setIsSuccessful(true);
+            response.setData(true);
+            response.setMessage("Post Liked");
             return ResponseEntity.status(HttpStatus.OK).body(response);
         }
     }

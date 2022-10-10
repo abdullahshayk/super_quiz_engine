@@ -75,12 +75,4 @@ public class Student {
     private List<Comment> comments=new ArrayList<>();
 
 
-
-
-
-
-
-
-
-
 }

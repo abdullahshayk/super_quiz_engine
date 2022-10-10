@@ -82,4 +82,14 @@ public class StudentApi {
         return studentService.getCommentsByPost(postId);
     }
 
+    @GetMapping("like-post/{studentId}/{postId}")
+    public ResponseEntity<Response>  likePost(
+            @PathVariable int studentId,
+            @PathVariable int postId
+    )  {
+        return studentService.likePost(studentId,postId);
+    }
+
+
+
 }

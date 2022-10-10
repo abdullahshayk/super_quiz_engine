@@ -28,7 +28,7 @@ public class Post {
     @JoinColumn(name = "teacher_id", nullable = false)
     private Teacher teacher;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "post")
     @JsonIgnore
     private List<Comment> comments=new ArrayList<>();
 

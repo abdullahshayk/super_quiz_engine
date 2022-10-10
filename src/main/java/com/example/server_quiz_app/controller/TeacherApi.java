@@ -47,4 +47,9 @@ public class TeacherApi {
             ) {
         return teacherService.addPost(teacherId,post);
     }
+
+    @DeleteMapping("delete-post/{postId}")
+    public ResponseEntity<Response> deletePost(@PathVariable Integer postId) {
+        return teacherService.deletePost(postId);
+    }
 }
