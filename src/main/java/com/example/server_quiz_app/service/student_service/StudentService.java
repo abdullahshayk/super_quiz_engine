@@ -23,6 +23,10 @@ public interface StudentService {
     ResponseEntity<Response> likeQuestion(LikeQuestion body);
 
     ResponseEntity<Response> addComment(Integer studentId,AddComment body);
+    ResponseEntity<Response> getPostByFollowing(Integer studentId);
+    ResponseEntity<Response> getCommentsByPost(Integer postId);
 
 
-    }
+
+
+}

@@ -24,14 +24,17 @@ public class Post {
     @Column(name = "`post_content`", nullable = true)
     private String postContent;
 
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY, optional = true)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "teacher_id", nullable = false)
     private Teacher teacher;
 
     @OneToMany(mappedBy = "post")
+    @JsonIgnore
     private List<Comment> comments=new ArrayList<>();
 
     @ManyToMany(mappedBy = "likedPosts")
     @JsonIgnore
     private List<Student> likedBy = new ArrayList<>();
+
+
 }

@@ -40,11 +40,11 @@ public class TeacherApi {
         return teacherService.getCategories(id);
     }
 
-    @PostMapping("add-post/{id}")
+    @PostMapping("add-post/{teacherId}")
     public ResponseEntity<Response> addPost(
-            @PathVariable int id,
+            @PathVariable int teacherId,
             @RequestBody Post post
             ) {
-        return teacherService.addPost(id,post);
+        return teacherService.addPost(teacherId,post);
     }
 }

@@ -68,4 +68,18 @@ public class StudentApi {
         return studentService.addComment(studentId,body);
     }
 
+    @GetMapping("get-post-by-followings/{studentId}")
+    public ResponseEntity<Response> getPostByFollowings(
+            @PathVariable int studentId
+    ) {
+        return studentService.getPostByFollowing(studentId);
+    }
+
+    @GetMapping("get-comments-by-post/{postId}")
+    public ResponseEntity<Response> getCommentsByPost(
+            @PathVariable int postId
+    ) {
+        return studentService.getCommentsByPost(postId);
+    }
+
 }

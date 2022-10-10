@@ -15,11 +15,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -344,4 +346,40 @@ public class StudentServiceImpl implements StudentService {
 
 
     }
+
+    @Override
+    public ResponseEntity<Response> getPostByFollowing(Integer studentId) {
+        Response response = new Response();
+        Optional<Student> student = studentDao.findById(studentId);
+        if(!student.isPresent()){
+            throw new ResourceNotFoundException("Student Not found");
+        }
+        else{
+            List<Post> posts = student.get().getFollowedTeachers().stream()
+                    .flatMap(e -> e.getPosts().stream())
+                    .collect(Collectors.toList());
+            response.setIsSuccessful(true);
+            response.setData(posts);
+            response.setMessage("Successful");
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }
+    }
+
+    @Override
+    public ResponseEntity<Response> getCommentsByPost(Integer postId) {
+        Response response = new Response();
+        Optional<Post> post = postDao.findById(postId);
+        if(!post.isPresent()){
+            throw new ResourceNotFoundException("Post Not found");
+        }
+        else{
+            List<Comment> comments = post.get().getComments();
+            response.setIsSuccessful(true);
+            response.setData(comments);
+            response.setMessage("Successful");
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }
+    }
+
+
 }

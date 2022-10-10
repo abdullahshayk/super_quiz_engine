@@ -1,6 +1,8 @@
 package com.example.server_quiz_app.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +25,7 @@ public class Student {
     private String name;
 
     @Column(name = "password", nullable = false, length = 75)
+    @JsonIgnore
     private String password;
 
     @Column(name = "username", nullable = false, length = 75)
@@ -68,7 +71,10 @@ public class Student {
     private List<Post> likedPosts = new ArrayList<>();
 
     @OneToMany(mappedBy = "student")
+    @JsonIgnore
     private List<Comment> comments=new ArrayList<>();
+
+
 
 
 
