@@ -1,5 +1,6 @@
 package com.example.server_quiz_app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
@@ -49,8 +50,7 @@ public class Question {
     private List<Student> likedStudent = new ArrayList<>();
 
     @ManyToMany(mappedBy ="attemptedQuestion" )
+    @JsonIgnore
     private List<Student> attemptedByStudents = new ArrayList<>();
-
-
 
 }

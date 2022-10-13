@@ -4,10 +4,7 @@ import com.example.server_quiz_app.model.Category;
 import com.example.server_quiz_app.model.Post;
 import com.example.server_quiz_app.model.Response;
 import com.example.server_quiz_app.model.Student;
-import com.example.server_quiz_app.request_models.AddComment;
-import com.example.server_quiz_app.request_models.FollowTeacher;
-import com.example.server_quiz_app.request_models.LikeQuestion;
-import com.example.server_quiz_app.request_models.UserCategory;
+import com.example.server_quiz_app.request_models.*;
 import com.example.server_quiz_app.service.student_service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -89,6 +86,16 @@ public class StudentApi {
     )  {
         return studentService.likePost(studentId,postId);
     }
+
+    @PostMapping("attempt-question/{studentId}")
+    public ResponseEntity<Response> attemptQuestion(
+            @PathVariable int studentId,
+            @RequestBody AttemptQuestion body
+    ) {
+        return studentService.attemptQuestion(studentId,body);
+    }
+
+
 
 
 

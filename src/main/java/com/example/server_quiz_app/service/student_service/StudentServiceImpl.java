@@ -5,6 +5,7 @@ import com.example.server_quiz_app.exception_handling.AlreadyExistsException;
 import com.example.server_quiz_app.exception_handling.ResourceNotFoundException;
 import com.example.server_quiz_app.model.*;
 import com.example.server_quiz_app.request_models.AddComment;
+import com.example.server_quiz_app.request_models.AttemptQuestion;
 import com.example.server_quiz_app.request_models.FollowTeacher;
 import com.example.server_quiz_app.request_models.LikeQuestion;
 import com.example.server_quiz_app.security.JwtUtil;
@@ -38,6 +39,9 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     private CommentDao commentDao;
+
+    @Autowired
+    private StudentAttemptQuestionDao studentAttemptQuestionDao;
     @Autowired
     private JwtUtil jwtTokenUtil;
 
@@ -371,6 +375,28 @@ public class StudentServiceImpl implements StudentService {
             response.setIsSuccessful(true);
             response.setData(true);
             response.setMessage("Post Liked");
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }
+    }
+
+    public ResponseEntity<Response> attemptQuestion(Integer studentId,AttemptQuestion attemptQuestions){
+        Response response = new Response();
+        Optional<Student> student=studentDao.findById(studentId);
+        Optional<Question> question = questionDao.findById(attemptQuestions.getQuestionId());
+        if(!student.isPresent()){
+            throw new ResourceNotFoundException("Student Not found");
+        } else if (!question.isPresent()) {
+            throw new ResourceNotFoundException("Question Not found");
+        }
+        else{
+            StudentAttemptedQuestion studentAttemptedQuestion=new StudentAttemptedQuestion();
+            studentAttemptedQuestion.setQuestionQuestion(question.get());
+            studentAttemptedQuestion.setStudentStudent(student.get());
+            studentAttemptedQuestion.setIsCorrectAttempt(attemptQuestions.getIsCorrect());
+            studentAttemptQuestionDao.save(studentAttemptedQuestion);
+            response.setIsSuccessful(true);
+            response.setData(true);
+            response.setMessage("Question attempted");
             return ResponseEntity.status(HttpStatus.OK).body(response);
         }
     }

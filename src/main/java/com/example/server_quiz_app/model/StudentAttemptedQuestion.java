@@ -1,12 +1,17 @@
 package com.example.server_quiz_app.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "student_attempted_question")
 public class StudentAttemptedQuestion {
     @EmbeddedId
-    private StudentAttemptedQuestionId id;
+    private StudentAttemptedQuestionId id=new StudentAttemptedQuestionId();
 
     @MapsId("studentStudentId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -19,38 +24,7 @@ public class StudentAttemptedQuestion {
     private Question questionQuestion;
 
     @Column(name = "is_correct_attempt", nullable = false)
-    private Byte isCorrectAttempt;
+    private Boolean isCorrectAttempt;
 
-    public StudentAttemptedQuestionId getId() {
-        return id;
-    }
-
-    public void setId(StudentAttemptedQuestionId id) {
-        this.id = id;
-    }
-
-    public Student getStudentStudent() {
-        return studentStudent;
-    }
-
-    public void setStudentStudent(Student studentStudent) {
-        this.studentStudent = studentStudent;
-    }
-
-    public Question getQuestionQuestion() {
-        return questionQuestion;
-    }
-
-    public void setQuestionQuestion(Question questionQuestion) {
-        this.questionQuestion = questionQuestion;
-    }
-
-    public Byte getIsCorrectAttempt() {
-        return isCorrectAttempt;
-    }
-
-    public void setIsCorrectAttempt(Byte isCorrectAttempt) {
-        this.isCorrectAttempt = isCorrectAttempt;
-    }
 
 }

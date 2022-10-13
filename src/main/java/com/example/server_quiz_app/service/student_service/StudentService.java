@@ -4,10 +4,7 @@ import com.example.server_quiz_app.model.Category;
 import com.example.server_quiz_app.model.Post;
 import com.example.server_quiz_app.model.Response;
 import com.example.server_quiz_app.model.Student;
-import com.example.server_quiz_app.request_models.AddComment;
-import com.example.server_quiz_app.request_models.FollowTeacher;
-import com.example.server_quiz_app.request_models.LikeQuestion;
-import com.example.server_quiz_app.request_models.UserCategory;
+import com.example.server_quiz_app.request_models.*;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -27,7 +24,9 @@ public interface StudentService {
     ResponseEntity<Response> getCommentsByPost(Integer postId);
     ResponseEntity<Response> likePost(Integer studentId,Integer postId);
 
+    ResponseEntity<Response> attemptQuestion(Integer studentId, AttemptQuestion attemptQuestions);
 
 
 
-}
+
+    }

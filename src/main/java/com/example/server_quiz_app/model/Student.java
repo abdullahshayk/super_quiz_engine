@@ -53,7 +53,6 @@ public class Student {
     @JoinTable(name = "student_attempted_question",
             joinColumns = @JoinColumn(name = "student_student_id"),
             inverseJoinColumns = @JoinColumn(name = "question_question_id"))
-    @JsonIgnore
     private List<Question> attemptedQuestion = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.MERGE)
