@@ -1,0 +1,50 @@
+package com.example.server_quiz_app.dao;
+import com.example.server_quiz_app.model.Question;
+import com.example.server_quiz_app.model.Teacher;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
+
+
+public interface QuestionDao extends JpaRepository<Question,Integer>{
+
+    public List<Question> findQuestionsByTeacherId(Integer teacherId);
+    @Query("select teacher FROM Teacher teacher WHERE teacher.id=:id")
+    public Teacher doesTeacherExist(@Param("id") Integer teacherId);
+
+    @Query("select category FROM Category category WHERE category.id=:id")
+    public Teacher doesCategoryExist(@Param("id") Integer categoryId);
+
+    @Query(
+            nativeQuery = true,
+           // fix me;
+            value = "SELECT q.* from question q join question_category qt ON q.question_id=qt.question_question_id join category c ON qt.category_category_id=c.category_id WHERE c.category_id in (:categoryIds) and q.question_type in (:questionTypes)"
+    )
+    public List<Question> findQuestionsByCategoryAndType(@Param("categoryIds") List<Integer> categoryIds, @Param("questionTypes") List<Integer> questionTypes, PageRequest pageRequest);
+
+    @Query(
+            nativeQuery = true,
+            // fix me;
+            value = "SELECT q.* from question q join question_category qt ON q.question_id=qt.question_question_id join category c ON qt.category_category_id=c.category_id WHERE c.category_id in (:categoryIds)"
+    )
+    public List<Question> findQuestionsByCategory(@Param("categoryIds") List<Integer> categoryIds, PageRequest pageRequest);
+
+    @Query(
+            nativeQuery = true,
+            value = "SELECT * from question q where question_type in (:questionTypes)"
+    )
+    public List<Question> findQuestionsByQuestionType(@Param("questionTypes") List<Integer> questionTypes, PageRequest pageRequest);
+
+
+    @Query(
+            nativeQuery = true,
+            value = "SELECT * from question q"
+    )
+    public List<Question> findQuestions(PageRequest pageRequest);
+
+
+}
