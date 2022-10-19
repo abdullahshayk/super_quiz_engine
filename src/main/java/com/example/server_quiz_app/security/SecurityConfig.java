@@ -56,6 +56,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .anyRequest()
 //                .authenticated()
 //                .and()
+
+
 //                .sessionManagement()
 //                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 //
